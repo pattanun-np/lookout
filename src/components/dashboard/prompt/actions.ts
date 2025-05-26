@@ -18,7 +18,6 @@ export async function getPrompts(): Promise<Prompt[]> {
       })
       .from(prompts)
       .leftJoin(modelResults, eq(prompts.id, modelResults.promptId))
-      .where(eq(prompts.status, "completed"))
       .orderBy(desc(prompts.createdAt));
 
     const transformedPrompts: Prompt[] = promptsWithResults.map((row) => ({
@@ -42,7 +41,7 @@ export interface CreatePromptData {
   content: string;
   topicId: string;
   geoRegion?: Region;
-  tags?: string[];
+  tagsInput?: string;
 }
 
 export async function createPrompt(
@@ -52,6 +51,12 @@ export async function createPrompt(
     const user = await getUser();
     if (!user) throw new Error("User not found");
 
+    const tags =
+      data.tagsInput
+        ?.split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag.length > 0) ?? [];
+
     const [newPrompt] = await db
       .insert(prompts)
       .values({
@@ -59,7 +64,7 @@ export async function createPrompt(
         topicId: data.topicId,
         userId: user.id,
         geoRegion: data.geoRegion ?? "global",
-        tags: data.tags ?? [],
+        tags: tags,
         status: "pending",
       })
       .returning({ id: prompts.id });

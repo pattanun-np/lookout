@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Plus, Lightbulb } from "lucide-react";
+import { CreatePromptDialog } from "./create-dialog";
 
 export function PromptToolbar() {
   return (
@@ -10,10 +11,12 @@ export function PromptToolbar() {
         <Input placeholder="Search by prompt name" className="pl-9" />
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="default" size="sm" className="gap-2">
-          <Plus className="h-4 w-4" />
-          Add Prompt
-        </Button>
+        <CreatePromptDialog>
+          <Button variant="default" size="sm" className="gap-2">
+            <Plus className="h-4 w-4" />
+            Add Prompt
+          </Button>
+        </CreatePromptDialog>
         <Button variant="outline" size="sm" className="gap-2">
           <Lightbulb className="h-4 w-4" />
           Suggest Prompts
