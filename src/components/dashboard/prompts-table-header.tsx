@@ -43,7 +43,7 @@ export function PromptsTableHeader() {
         <TableHead>
           <div className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
-            GEO
+            Geo
           </div>
         </TableHead>
         <TableHead>
