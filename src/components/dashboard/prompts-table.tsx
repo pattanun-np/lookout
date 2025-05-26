@@ -19,7 +19,7 @@ async function PromptsTableContent() {
 
 export function PromptsTable() {
   return (
-    <div className="border rounded-lg">
+    <div className="border rounded-lg overflow-hidden">
       <Table>
         <PromptsTableHeader />
         <Suspense fallback={<PromptsTableSkeleton />}>

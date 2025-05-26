@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { Bot, ChevronRight, SquareTerminal } from "lucide-react";
 
 import {
   Collapsible,
@@ -18,25 +18,58 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
-}) {
+const staticNavMain = [
+  {
+    title: "Dashboard",
+    url: "#",
+    icon: SquareTerminal,
+    isActive: true,
+    items: [
+      {
+        title: "Brands",
+        url: "#",
+      },
+      {
+        title: "Prompts",
+        url: "#",
+      },
+      {
+        title: "Competitors",
+        url: "#",
+      },
+      {
+        title: "Mentions",
+        url: "#",
+      },
+    ],
+  },
+  {
+    title: "Settings",
+    url: "#",
+    icon: Bot,
+    items: [
+      {
+        title: "Sources",
+        url: "#",
+      },
+      {
+        title: "Billing",
+        url: "#",
+      },
+      {
+        title: "Account",
+        url: "#",
+      },
+    ],
+  },
+];
+
+export function NavMain() {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {staticNavMain.map((item) => (
           <Collapsible
             key={item.title}
             asChild

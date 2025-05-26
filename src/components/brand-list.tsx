@@ -1,3 +1,4 @@
+import { config } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 interface Brand {
@@ -10,13 +11,11 @@ interface BrandListProps {
   className?: string;
 }
 
-const LOGO_DEV_API = process.env.NEXT_PUBLIC_LOGO_API;
-
 function BrandAvatar({ brand }: { brand: Brand }) {
   if (brand.logo) {
     return (
       <img
-        src={`https://img.logo.dev/${brand.logo}?token=${LOGO_DEV_API}`}
+        src={`https://img.logo.dev/${brand.logo}?token=${config.logoDevApi}`}
         alt={brand.name}
         className="w-6 h-6 rounded object-cover border border-gray-200"
       />
