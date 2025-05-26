@@ -1,5 +1,3 @@
-import { unstable_noStore as noStore } from "next/cache";
-
 export interface Prompt {
   id: number;
   prompt: string;
@@ -11,13 +9,9 @@ export interface Prompt {
   status: string;
 }
 
-// Simulate API delay for realistic loading experience
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function getPrompts(): Promise<Prompt[]> {
-  noStore(); // Prevent caching for dynamic data
-
-  // Simulate network delay
   await delay(800);
 
   return [

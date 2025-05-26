@@ -2,7 +2,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BrandList } from "@/components/brand-list";
 import { PromptTags } from "./prompt-tags";
-import type { Prompt } from "@/lib/actions";
+import type { Prompt } from "@/components/dashboard/actions";
 
 interface PromptTableRowProps {
   prompt: Prompt;

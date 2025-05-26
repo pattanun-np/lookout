@@ -3,7 +3,7 @@ import { Table, TableBody } from "@/components/ui/table";
 import { PromptsTableHeader } from "./prompts-table-header";
 import { PromptsTableSkeleton } from "./prompts-table-skeleton";
 import { PromptTableRow } from "./prompt-table-row";
-import { getPrompts } from "@/lib/actions";
+import { getPrompts } from "./actions";
 
 async function PromptsTableContent() {
   const prompts = await getPrompts();
