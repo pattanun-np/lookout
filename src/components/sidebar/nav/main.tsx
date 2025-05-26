@@ -1,64 +1,33 @@
-import { Bot, ChevronRight, SquareTerminal } from "lucide-react";
+import { AtSign, BicepsFlexed, Bot, SquareTerminal } from "lucide-react";
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 
 const staticNavMain = [
   {
-    title: "Dashboard",
-    url: "#",
+    title: "Brands",
     icon: SquareTerminal,
-    isActive: true,
-    items: [
-      {
-        title: "Brands",
-        url: "#",
-      },
-      {
-        title: "Prompts",
-        url: "#",
-      },
-      {
-        title: "Competitors",
-        url: "#",
-      },
-      {
-        title: "Mentions",
-        url: "#",
-      },
-    ],
+    url: "#",
   },
   {
-    title: "Settings",
-    url: "#",
+    title: "Prompts",
     icon: Bot,
-    items: [
-      {
-        title: "Providers",
-        url: "#",
-      },
-      {
-        title: "Sources",
-        url: "#",
-      },
-      {
-        title: "Account",
-        url: "#",
-      },
-    ],
+    url: "#",
+  },
+  {
+    title: "Competitors",
+    icon: BicepsFlexed,
+    url: "#",
+  },
+  {
+    title: "Mentions",
+    icon: AtSign,
+    url: "#",
   },
 ];
 
@@ -68,35 +37,14 @@ export function NavMain() {
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {staticNavMain.map((item) => (
-          <Collapsible
-            key={item.title}
-            asChild
-            defaultOpen={item.isActive}
-            className="group/collapsible"
-          >
-            <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                </SidebarMenuButton>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarMenuSub>
-                  {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </a>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
-                </SidebarMenuSub>
-              </CollapsibleContent>
-            </SidebarMenuItem>
-          </Collapsible>
+          <SidebarMenuItem key={item.title}>
+            <SidebarMenuButton asChild>
+              <a href={item.url}>
+                <item.icon />
+                <span>{item.title}</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         ))}
       </SidebarMenu>
     </SidebarGroup>
