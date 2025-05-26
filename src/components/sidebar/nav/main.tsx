@@ -47,11 +47,11 @@ const staticNavMain = [
     icon: Bot,
     items: [
       {
-        title: "Sources",
+        title: "Providers",
         url: "#",
       },
       {
-        title: "Billing",
+        title: "Sources",
         url: "#",
       },
       {
