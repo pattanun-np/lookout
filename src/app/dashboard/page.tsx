@@ -26,13 +26,18 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Lightbulb } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { BrandList } from "@/components/brand-list";
 
 const prompts = [
   {
     id: 1,
     prompt: "Most efficient electric cars 2024",
     visibility: "42%",
-    top: "1 3",
+    top: [
+      { name: "Tesla", logo: "tesla.com" },
+      { name: "BMW" },
+      { name: "Audi" },
+    ],
     tags: ["Add Tags"],
     geo: "Global",
     created: "2 days ago",
@@ -42,7 +47,11 @@ const prompts = [
     id: 2,
     prompt: "Beste Elektroautos für Familien",
     visibility: "38%",
-    top: "1 3",
+    top: [
+      { name: "Tesla", logo: "tesla.com" },
+      { name: "Volkswagen", logo: "volkswagen.com" },
+      { name: "Mercedes" },
+    ],
     tags: ["Safety Features", "Competitive", "Pricing"],
     geo: "DE",
     created: "4 days ago",
@@ -52,7 +61,11 @@ const prompts = [
     id: 3,
     prompt: "EV safety features comparison",
     visibility: "35%",
-    top: "1 3",
+    top: [
+      { name: "Tesla", logo: "tesla.com" },
+      { name: "Volvo", logo: "volvo.com" },
+      { name: "BMW" },
+    ],
     tags: ["Pricing", "Features", "Reviews", "Technical"],
     geo: "Global",
     created: "3 days ago",
@@ -62,7 +75,11 @@ const prompts = [
     id: 4,
     prompt: "Top electric vehicle brands",
     visibility: "33%",
-    top: "2 3",
+    top: [
+      { name: "BYD" },
+      { name: "Tesla", logo: "tesla.com" },
+      { name: "Nio" },
+    ],
     tags: ["EV Range"],
     geo: "JP",
     created: "9 days ago",
@@ -72,7 +89,7 @@ const prompts = [
     id: 5,
     prompt: "Wie funktioniert Autopilot?",
     visibility: "31%",
-    top: "12",
+    top: [{ name: "Tesla", logo: "tesla.com" }, { name: "Waymo" }],
     tags: ["Pricing", "Market Share", "Performance"],
     geo: "DE",
     created: "10 days ago",
@@ -82,7 +99,11 @@ const prompts = [
     id: 6,
     prompt: "Best charging network reviews",
     visibility: "30%",
-    top: "1 3",
+    top: [
+      { name: "Tesla", logo: "tesla.com" },
+      { name: "ChargePoint" },
+      { name: "Electrify America" },
+    ],
     tags: ["Technical", "Reviews", "EV Range"],
     geo: "USA",
     created: "13 days ago",
@@ -92,7 +113,11 @@ const prompts = [
     id: 7,
     prompt: "Electric vs hybrid technology",
     visibility: "30%",
-    top: "2 3",
+    top: [
+      { name: "Toyota", logo: "toyota.com" },
+      { name: "Honda", logo: "honda.com" },
+      { name: "Hyundai" },
+    ],
     tags: ["Pricing", "Competitive"],
     geo: "Global",
     created: "15 days ago",
@@ -102,7 +127,10 @@ const prompts = [
     id: 8,
     prompt: "EV incentives and tax benefits",
     visibility: "28%",
-    top: "2 1",
+    top: [
+      { name: "Tesla", logo: "tesla.com" },
+      { name: "Ford", logo: "ford.com" },
+    ],
     tags: ["Technical", "EV Range", "Performance"],
     geo: "EU",
     created: "16 days ago",
@@ -112,7 +140,11 @@ const prompts = [
     id: 9,
     prompt: "Top electric vehicle brands",
     visibility: "27%",
-    top: "2 3",
+    top: [
+      { name: "BYD" },
+      { name: "Tesla", logo: "tesla.com" },
+      { name: "Geely" },
+    ],
     tags: ["Safety Features", "Reviews", "Technical"],
     geo: "CN",
     created: "Yesterday",
@@ -122,7 +154,7 @@ const prompts = [
     id: 10,
     prompt: "Most reliable car manufacturers",
     visibility: "26%",
-    top: "2 1",
+    top: [{ name: "Toyota", logo: "toyota.com" }, { name: "Lexus" }],
     tags: ["Add Tags"],
     geo: "Global",
     created: "19 days ago",
@@ -132,7 +164,11 @@ const prompts = [
     id: 11,
     prompt: "Battery longevity in EVs",
     visibility: "25%",
-    top: "1 3",
+    top: [
+      { name: "Tesla", logo: "tesla.com" },
+      { name: "CATL" },
+      { name: "Panasonic" },
+    ],
     tags: ["Features", "Reviews", "Performance"],
     geo: "Global",
     created: "20 days ago",
@@ -142,7 +178,7 @@ const prompts = [
     id: 12,
     prompt: "Luxury car maintenance costs",
     visibility: "24%",
-    top: "2 3",
+    top: [{ name: "BMW" }, { name: "Mercedes" }, { name: "Audi" }],
     tags: ["Pricing"],
     geo: "DE",
     created: "22 days ago",
@@ -152,7 +188,7 @@ const prompts = [
     id: 13,
     prompt: "Most advanced driver assistance systems",
     visibility: "23%",
-    top: "2 1",
+    top: [{ name: "Tesla", logo: "tesla.com" }, { name: "Waymo" }],
     tags: ["Safety Features", "Technical"],
     geo: "USA",
     created: "Today",
@@ -261,7 +297,9 @@ export default function Page() {
                     <TableCell>
                       <span className="font-medium">{prompt.visibility}</span>
                     </TableCell>
-                    <TableCell>{prompt.top}</TableCell>
+                    <TableCell>
+                      <BrandList brands={prompt.top} />
+                    </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
                         {prompt.tags.map((tag, idx) => (

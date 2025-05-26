@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "d": "doppler run --",
+    "dev": "bun run d next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "bun run d drizzle-kit migrate",
+    "db:studio": "bun run d drizzle-kit studio"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.10",
