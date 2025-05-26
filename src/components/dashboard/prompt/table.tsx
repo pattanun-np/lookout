@@ -1,12 +1,24 @@
 import { Suspense } from "react";
-import { Table, TableBody } from "@/components/ui/table";
-import { PromptsTableHeader } from "./prompts-table-header";
-import { PromptsTableSkeleton } from "./prompts-table-skeleton";
-import { PromptTableRow } from "./prompt-table-row";
+import { Table, TableBody, TableEmptyState } from "@/components/ui/table";
+import { PromptsTableHeader } from "./header";
+import { PromptsTableSkeleton } from "./skeleton";
+import { PromptTableRow } from "./row";
 import { getPrompts } from "./actions";
+import { Bot } from "lucide-react";
 
 async function PromptsTableContent() {
   const prompts = await getPrompts();
+
+  if (prompts.length === 0) {
+    return (
+      <TableEmptyState
+        colSpan={7}
+        title="No prompts found"
+        description="Start by creating your first prompt to see it appear here."
+        icon={Bot}
+      />
+    );
+  }
 
   return (
     <TableBody>

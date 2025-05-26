@@ -7,27 +7,28 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 const staticNavMain = [
   {
-    title: "Brands",
+    title: "Topics",
     icon: SquareTerminal,
-    url: "#",
+    url: "/dashboard/topics",
   },
   {
     title: "Prompts",
     icon: Bot,
-    url: "#",
+    url: "/dashboard/prompts",
   },
   {
     title: "Competitors",
     icon: BicepsFlexed,
-    url: "#",
+    url: "/dashboard/competitors",
   },
   {
     title: "Mentions",
     icon: AtSign,
-    url: "#",
+    url: "/dashboard/mentions",
   },
 ];
 
@@ -39,10 +40,10 @@ export function NavMain() {
         {staticNavMain.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
+              <Link href={item.url}>
                 <item.icon />
                 <span>{item.title}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

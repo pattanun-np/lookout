@@ -1,8 +1,8 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BrandList } from "@/components/brand-list";
-import { PromptTags } from "./prompt-tags";
-import type { Prompt } from "@/components/dashboard/actions";
+import { PromptTags } from "./tags";
+import type { Prompt } from "@/types/prompt";
 
 interface PromptTableRowProps {
   prompt: Prompt;
@@ -14,9 +14,9 @@ export function PromptTableRow({ prompt }: PromptTableRowProps) {
       <TableCell>
         <Checkbox />
       </TableCell>
-      <TableCell className="font-medium max-w-xs">{prompt.prompt}</TableCell>
+      <TableCell className="font-medium max-w-xs">{prompt.content}</TableCell>
       <TableCell>
-        <span className="font-medium">{prompt.visibility}</span>
+        <span className="font-medium">{prompt.visibilityScore}</span>
       </TableCell>
       <TableCell>
         <BrandList brands={prompt.top} />
@@ -24,9 +24,11 @@ export function PromptTableRow({ prompt }: PromptTableRowProps) {
       <TableCell>
         <PromptTags tags={prompt.tags} />
       </TableCell>
-      <TableCell>{prompt.geo}</TableCell>
+      <TableCell>{prompt.geoRegion}</TableCell>
       <TableCell className="text-sm text-muted-foreground">
-        {prompt.created}
+        {prompt.completedAt
+          ? new Date(prompt.completedAt).toLocaleDateString()
+          : "Pending"}
       </TableCell>
     </TableRow>
   );

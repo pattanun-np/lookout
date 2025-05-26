@@ -12,7 +12,7 @@ interface BrandListProps {
   className?: string;
 }
 
-function BrandAvatar({ brand }: { brand: Brand }) {
+export function ImageAvatar({ brand }: { brand: Brand }) {
   if (brand.logo) {
     return (
       <Image
@@ -39,7 +39,7 @@ export function BrandList({ brands, className }: BrandListProps) {
     <div className={cn("flex items-center gap-1", className)}>
       {brands.map((brand, index) => (
         <div key={index} className="flex items-center gap-1">
-          <BrandAvatar brand={brand} />
+          <ImageAvatar brand={brand} />
         </div>
       ))}
     </div>

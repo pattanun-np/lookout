@@ -3,7 +3,11 @@ import {
   text,
   timestamp,
   boolean,
-  integer,
+  uuid,
+  numeric,
+  jsonb,
+  pgEnum,
+  unique,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -61,3 +65,92 @@ export const verification = pgTable("verification", {
   createdAt: timestamp("created_at").$defaultFn(() => new Date()),
   updatedAt: timestamp("updated_at").$defaultFn(() => new Date()),
 });
+
+export const topics = pgTable("topics", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  logo: text("logo"),
+  description: text("description"),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const modelEnum = pgEnum("model", ["openai", "claude", "google"]);
+
+export const geoRegionEnum = pgEnum("geo_region", [
+  "global",
+  "us",
+  "eu",
+  "uk",
+  "de",
+  "fr",
+  "es",
+  "it",
+  "in",
+  "jp",
+  "cn",
+  "au",
+  "ca",
+  "br",
+]);
+
+export const status = pgEnum("prompt_status", [
+  "pending",
+  "processing",
+  "completed",
+  "failed",
+  "cancelled",
+]);
+
+export type modelStatus = "pending" | "processing" | "completed" | "failed";
+
+export const prompts = pgTable("prompts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  topicId: uuid("topic_id")
+    .notNull()
+    .references(() => topics.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  status: status("status").notNull().default("pending"),
+  geoRegion: geoRegionEnum("geo_region").notNull().default("global"),
+  visibilityScore: numeric("visibility_score", { precision: 5, scale: 2 }),
+  tags: jsonb("tags").notNull().$type<string[]>().default([]),
+  metadata: jsonb("metadata").notNull().default({}),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+export const modelResults = pgTable(
+  "prompt_results",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    promptId: uuid("prompt_id")
+      .notNull()
+      .references(() => prompts.id, { onDelete: "cascade" }),
+    model: modelEnum("model").notNull(),
+    response: text("response"),
+    responseMetadata: jsonb("response_metadata").notNull().default({}),
+    status: status("status").notNull().default("pending"),
+    errorMessage: text("error_message"),
+    results: jsonb("results")
+      .notNull()
+      .$type<{ name: string; logo?: string }[]>()
+      .default([]),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    completedAt: timestamp("completed_at"),
+  },
+  (table) => [
+    unique("ai_model_results_prompt_model_unique").on(
+      table.promptId,
+      table.model
+    ),
+  ]
+);

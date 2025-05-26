@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { FileX } from "lucide-react";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -102,6 +103,38 @@ function TableCaption({
   );
 }
 
+interface TableEmptyStateProps {
+  colSpan: number;
+  title?: string;
+  description?: string;
+  icon?: React.ComponentType<{ className?: string }>;
+}
+
+function TableEmptyState({
+  colSpan,
+  title = "No data found",
+  description = "There are no items to display at the moment.",
+  icon: Icon = FileX,
+}: TableEmptyStateProps) {
+  return (
+    <TableBody>
+      <TableRow className="hover:bg-transparent">
+        <TableCell colSpan={colSpan} className="h-32">
+          <div className="flex flex-col items-center justify-center text-center py-8">
+            <Icon className="h-8 w-8 text-muted-foreground mb-3" />
+            <h3 className="text-sm font-medium text-foreground mb-1">
+              {title}
+            </h3>
+            <p className="text-sm text-muted-foreground max-w-sm">
+              {description}
+            </p>
+          </div>
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  );
+}
+
 export {
   Table,
   TableHeader,
@@ -111,4 +144,5 @@ export {
   TableRow,
   TableCell,
   TableCaption,
+  TableEmptyState,
 };
