@@ -1,4 +1,3 @@
-import { ChevronsUpDown } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   SidebarMenu,

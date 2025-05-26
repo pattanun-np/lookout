@@ -1,5 +1,3 @@
-import { GalleryVerticalEnd } from "lucide-react";
-
 export interface User {
   name: string;
   email: string;
