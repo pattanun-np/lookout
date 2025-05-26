@@ -1,5 +1,3 @@
-"use client";
-
 import { Bot, ChevronRight, SquareTerminal } from "lucide-react";
 
 import {

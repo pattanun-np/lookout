@@ -40,14 +40,15 @@ export function TeamSwitcherComp({
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
-          <div className="text-sidebar-primary-foreground flex  size-8 items-center justify-center">
+          <div className="flex aspect-square size-7 items-center justify-center rounded-lg">
             <img
               src={`https://img.logo.dev/${team.logo}?token=${config.logoDevApi}`}
               alt={team.name}
+              className="size-7"
             />
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">{team.name}</span>
+            <span className="truncate font-semibold">{team.name}</span>
             <span className="truncate text-xs">{team.plan}</span>
           </div>
           <ChevronsUpDown className="ml-auto" />
