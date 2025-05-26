@@ -24,7 +24,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, Lightbulb } from "lucide-react";
+import {
+  Search,
+  Plus,
+  Lightbulb,
+  MessageSquare,
+  Eye,
+  Trophy,
+  Tags,
+  Globe,
+  Calendar,
+} from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BrandList } from "@/components/brand-list";
 
@@ -277,12 +287,42 @@ export default function Page() {
                   <TableHead>
                     <Checkbox />
                   </TableHead>
-                  <TableHead>Prompt</TableHead>
-                  <TableHead>Visibility</TableHead>
-                  <TableHead>Top</TableHead>
-                  <TableHead>Tags</TableHead>
-                  <TableHead>GEO</TableHead>
-                  <TableHead>Created</TableHead>
+                  <TableHead>
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="h-4 w-4" />
+                      Prompt
+                    </div>
+                  </TableHead>
+                  <TableHead>
+                    <div className="flex items-center gap-2">
+                      <Eye className="h-4 w-4" />
+                      Visibility
+                    </div>
+                  </TableHead>
+                  <TableHead>
+                    <div className="flex items-center gap-2">
+                      <Trophy className="h-4 w-4" />
+                      Top
+                    </div>
+                  </TableHead>
+                  <TableHead>
+                    <div className="flex items-center gap-2">
+                      <Tags className="h-4 w-4" />
+                      Tags
+                    </div>
+                  </TableHead>
+                  <TableHead>
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4" />
+                      GEO
+                    </div>
+                  </TableHead>
+                  <TableHead>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      Created
+                    </div>
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
