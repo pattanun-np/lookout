@@ -24,13 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import {
-  Search,
-  Plus,
-  Lightbulb,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Search, Plus, Lightbulb } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const prompts = [
