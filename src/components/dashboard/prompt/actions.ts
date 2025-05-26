@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { prompts, modelResults } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { getUser } from "@/auth/server";
+import { revalidatePath } from "next/cache";
 
 export async function getPrompts(): Promise<Prompt[]> {
   try {
@@ -41,7 +42,7 @@ export interface CreatePromptData {
   content: string;
   topicId: string;
   geoRegion?: Region;
-  tagsInput?: string;
+  tags?: string;
 }
 
 export async function createPrompt(
@@ -52,7 +53,7 @@ export async function createPrompt(
     if (!user) throw new Error("User not found");
 
     const tags =
-      data.tagsInput
+      data.tags
         ?.split(",")
         .map((tag) => tag.trim())
         .filter((tag) => tag.length > 0) ?? [];
@@ -64,10 +65,12 @@ export async function createPrompt(
         topicId: data.topicId,
         userId: user.id,
         geoRegion: data.geoRegion ?? "global",
-        tags: tags,
+        tags,
         status: "pending",
       })
       .returning({ id: prompts.id });
+
+    revalidatePath("/dashboard/prompts");
 
     return {
       success: true,

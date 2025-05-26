@@ -36,7 +36,7 @@ async function TopicSelect() {
       </label>
       <Select name="topicId">
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Theme" />
+          <SelectValue placeholder="Topic" />
         </SelectTrigger>
         <SelectContent>
           {topics.map((topic) => (
@@ -54,26 +54,15 @@ export function CreatePromptDialog({ children }: CreatePromptDialogProps) {
   async function handleCreatePrompt(formData: FormData) {
     "use server";
 
-    console.log("Form data entries:");
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
     const content = formData.get("content") as string;
     const topicId = formData.get("topicId") as string;
     const geoRegion = formData.get("geoRegion") as string;
-    const tagsInput = formData.get("tags") as string;
+    const tags = formData.get("tags") as string;
 
     if (!content?.trim() || !topicId?.trim()) {
       console.error("Missing required fields");
       return;
     }
-
-    const tags =
-      tagsInput
-        ?.split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag.length > 0) || [];
 
     await createPrompt({
       content: content.trim(),

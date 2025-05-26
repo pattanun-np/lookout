@@ -35,6 +35,7 @@ function extractDomainFromUrl(url: string): string {
   }
 }
 
+// FIX: this is not working
 async function fetchMetaDescription(url: string): Promise<string> {
   try {
     const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`;
