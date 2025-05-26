@@ -19,7 +19,7 @@ export function PromptToolbar() {
         </CreatePromptDialog>
         <Button variant="outline" size="sm" className="gap-2">
           <Lightbulb className="h-4 w-4" />
-          Suggest Prompts
+          Suggestions
         </Button>
       </div>
     </div>
