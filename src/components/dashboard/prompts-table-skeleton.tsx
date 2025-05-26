@@ -1,0 +1,41 @@
+import { TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export function PromptsTableSkeleton() {
+  return (
+    <TableBody>
+      {Array.from({ length: 8 }).map((_, i) => (
+        <TableRow key={i}>
+          <TableCell>
+            <Skeleton className="h-4 w-4" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-48" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-12" />
+          </TableCell>
+          <TableCell>
+            <div className="flex gap-1">
+              <Skeleton className="h-6 w-6 rounded" />
+              <Skeleton className="h-6 w-6 rounded" />
+              <Skeleton className="h-6 w-6 rounded" />
+            </div>
+          </TableCell>
+          <TableCell>
+            <div className="flex gap-1">
+              <Skeleton className="h-5 w-16 rounded-full" />
+              <Skeleton className="h-5 w-20 rounded-full" />
+            </div>
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-12" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-16" />
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  );
+}

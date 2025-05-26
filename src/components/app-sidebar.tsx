@@ -2,17 +2,16 @@
 
 import * as React from "react";
 import {
-  AudioWaveform,
-  BookOpen,
   Bot,
-  Command,
+  BugIcon,
   Frame,
   GalleryVerticalEnd,
-  Map,
+  HelpCircleIcon,
   PieChart,
-  Settings2,
   SquareTerminal,
 } from "lucide-react";
+
+import { GithubIcon, TwitterIcon } from "@/components/ui/icons";
 
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
@@ -48,6 +47,10 @@ const data = {
       isActive: true,
       items: [
         {
+          title: "Brands",
+          url: "#",
+        },
+        {
           title: "Prompts",
           url: "#",
         },
@@ -67,15 +70,15 @@ const data = {
       icon: Bot,
       items: [
         {
-          title: "Account",
-          url: "#",
-        },
-        {
-          title: "Models",
+          title: "Sources",
           url: "#",
         },
         {
           title: "Billing",
+          url: "#",
+        },
+        {
+          title: "Account",
           url: "#",
         },
       ],
@@ -85,12 +88,22 @@ const data = {
     {
       name: "Raise an Issue",
       url: "#",
-      icon: Frame,
+      icon: BugIcon,
     },
     {
       name: "Help",
       url: "#",
-      icon: PieChart,
+      icon: HelpCircleIcon,
+    },
+    {
+      name: "10xuio/lookout",
+      url: "#",
+      icon: GithubIcon,
+    },
+    {
+      name: "lookout_so",
+      url: "#",
+      icon: TwitterIcon,
     },
   ],
 };
