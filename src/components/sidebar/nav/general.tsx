@@ -33,7 +33,7 @@ const generalNavItems = [
   },
 ];
 
-export function GeneralNav() {
+export function NavGeneral() {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>General</SidebarGroupLabel>

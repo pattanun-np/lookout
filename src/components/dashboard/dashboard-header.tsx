@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { config } from "@/lib/config";
+import Image from "next/image";
 
 export function DashboardHeader() {
   return (
@@ -21,8 +23,17 @@ export function DashboardHeader() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="#" className="text-red-600">
-                Tesla
+              <BreadcrumbLink href="#">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={`https://img.logo.dev/tesla.com?token=${config.logoDevApi}`}
+                    alt="Tesla"
+                    width={20}
+                    height={20}
+                    className="rounded-md"
+                  />
+                  Tesla
+                </div>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="hidden md:block" />

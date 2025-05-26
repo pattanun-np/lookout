@@ -1,8 +1,8 @@
 import * as React from "react";
 
 import { NavMain } from "./nav/main";
-import { GeneralNav } from "./nav/projects";
-import { NavUserWrapper } from "./nav/wrapper";
+import { NavGeneral } from "./nav/general";
+import { NavUser } from "./nav/user";
 import { TeamSwitcher } from "./team-switcher";
 import {
   Sidebar,
@@ -20,10 +20,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
-        <GeneralNav />
+        <NavGeneral />
       </SidebarContent>
       <SidebarFooter>
-        <NavUserWrapper />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

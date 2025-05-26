@@ -1,5 +1,6 @@
 import { config } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface Brand {
   name: string;
@@ -14,10 +15,12 @@ interface BrandListProps {
 function BrandAvatar({ brand }: { brand: Brand }) {
   if (brand.logo) {
     return (
-      <img
+      <Image
         src={`https://img.logo.dev/${brand.logo}?token=${config.logoDevApi}`}
         alt={brand.name}
         className="w-6 h-6 rounded object-cover border border-gray-200"
+        width={24}
+        height={24}
       />
     );
   }

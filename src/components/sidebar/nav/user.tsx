@@ -22,8 +22,24 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { NavUserLoading } from "./loading";
+import { Suspense } from "react";
+import { getUserData } from "./actions";
 
-export function NavUser({
+async function NavUserAsync() {
+  const user = await getUserData();
+  return <NavUserComp user={user} />;
+}
+
+export function NavUser() {
+  return (
+    <Suspense fallback={<NavUserLoading />}>
+      <NavUserAsync />
+    </Suspense>
+  );
+}
+
+export function NavUserComp({
   user,
 }: {
   user: {
