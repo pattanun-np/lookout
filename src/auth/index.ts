@@ -4,6 +4,11 @@ import { nextCookies } from "better-auth/next-js";
 import * as schema from "@/db/schema";
 import { db } from "@/db";
 
+type UserSchema = typeof schema.user.$inferSelect;
+export type User = Omit<UserSchema, "image"> & {
+  image?: string | null | undefined;
+};
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",

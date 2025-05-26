@@ -24,7 +24,7 @@ export function LoginForm({
       setIsLoading(true);
       await signIn.social({
         provider: "google",
-        callbackURL: "/onboarding",
+        callbackURL: "/dashboard",
       });
     } catch (error) {
       console.error(error);
