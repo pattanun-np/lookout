@@ -1,4 +1,5 @@
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function PromptsTableSkeleton() {
@@ -7,7 +8,7 @@ export function PromptsTableSkeleton() {
       {Array.from({ length: 8 }).map((_, i) => (
         <TableRow key={i}>
           <TableCell>
-            <Skeleton className="h-4 w-4" />
+            <Checkbox />
           </TableCell>
           <TableCell>
             <Skeleton className="h-4 w-48" />
