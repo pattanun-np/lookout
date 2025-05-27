@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Check, Loader2, Play, RotateCcw } from "lucide-react";
+import { Check, Loader2, RotateCcw, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Status } from "@/types/prompt";
@@ -89,7 +89,7 @@ export function ProcessButton({ promptId, status }: ProcessButtonProps) {
 
   return (
     <Button variant="outline" size="sm" onClick={handleProcess}>
-      <Play className="h-4 w-4" />
+      <Search className="h-4 w-4" />
     </Button>
   );
 }
