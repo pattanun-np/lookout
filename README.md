@@ -2,15 +2,13 @@
 
 <div align="center">
 
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/lookout?style=social)](https://github.com/yourusername/lookout/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/yourusername/lookout?style=social)](https://github.com/yourusername/lookout/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/10xuio/lookout?style=social)](https://github.com/10xuio/lookout)
+[![GitHub forks](https://img.shields.io/github/forks/10xuio/lookout?style=social)](https://github.com/10xuio/lookout/network/members)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
 
 **The first open-source platform to track your brand's ranking across ChatGPT, Claude, Gemini, and other LLM search engines**
-
-[🚀 Live Demo](https://lookout-demo.vercel.app) • [📖 Documentation](https://docs.lookout.dev) • [💬 Discord](https://discord.gg/lookout) • [🐦 Twitter](https://twitter.com/lookout_dev)
 
 </div>
 
@@ -71,7 +69,7 @@ As AI search engines like ChatGPT, Claude, and Gemini become the new Google, **y
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/lookout.git
+git clone https://github.com/10xuio/lookout.git
 cd lookout
 
 # Install dependencies
@@ -92,15 +90,14 @@ bun run dev
 
 ```env
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/lookout
+POSTGRES_URL=postgresql://user:password@localhost:5432/lookout
 
 # LLM API Keys
 OPENAI_API_KEY=sk-...
 ANTHROPIC_API_KEY=sk-ant-...
 GOOGLE_GENERATIVE_AI_API_KEY=...
-
-# Optional: Logo service
-LOGO_DEV_API_KEY=...
+BETTER_AUTH_SECRET=...
+NEXT_PUBLIC_LOGO_API=...
 ```
 
 ## 📖 Usage
@@ -150,7 +147,6 @@ graph LR
 - `POST /api/prompts/process` - Queue prompt for processing
 - `GET /api/prompts/[id]/status` - Check processing status
 - `GET /api/prompts/[id]/results` - Retrieve results
-- `GET /api/analytics/trends` - Get ranking trends
 
 ## 🛠️ Technology Stack
 
@@ -179,19 +175,6 @@ graph LR
 }
 ```
 
-### Docker Support
-
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
 ## 📊 Performance Benchmarks
 
 - **Response Time**: < 2s for status checks
@@ -202,13 +185,13 @@ CMD ["npm", "start"]
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! See our Contributing Guide for details.
 
 ### Development Setup
 
 ```bash
 # Fork and clone the repo
-git clone https://github.com/yourusername/lookout.git
+git clone https://github.com/10xuio/lookout.git
 
 # Create a feature branch
 git checkout -b feature/amazing-feature
@@ -265,20 +248,13 @@ bun run lint
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🙏 Acknowledgments
 
 - [Vercel](https://vercel.com) for hosting and serverless functions
 - [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), and [Google](https://ai.google.dev) for LLM APIs
 - The open-source community for amazing tools and libraries
-
-## 📞 Support
-
-- 📧 Email: support@lookout.dev
-- 💬 Discord: [Join our community](https://discord.gg/lookout)
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/lookout/issues)
-- 📖 Docs: [Documentation](https://docs.lookout.dev)
 
 ---
 
