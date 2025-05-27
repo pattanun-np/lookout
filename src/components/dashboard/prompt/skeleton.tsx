@@ -14,9 +14,6 @@ export function PromptsTableSkeleton() {
             <Skeleton className="h-4 w-48" />
           </TableCell>
           <TableCell>
-            <Skeleton className="h-4 w-12" />
-          </TableCell>
-          <TableCell>
             <div className="flex gap-1">
               <Skeleton className="h-7 w-7 rounded" />
               <Skeleton className="h-7 w-7 rounded" />
@@ -26,7 +23,7 @@ export function PromptsTableSkeleton() {
           <TableCell>
             <div className="flex gap-1">
               <Skeleton className="h-5 w-16 rounded" />
-              <Skeleton className="h-5 w-20 rounded" />
+              <Skeleton className="h-5 w-16 rounded" />
             </div>
           </TableCell>
           <TableCell>
@@ -36,7 +33,11 @@ export function PromptsTableSkeleton() {
             <Skeleton className="h-4 w-16" />
           </TableCell>
           <TableCell>
-            <Skeleton className="h-8 w-20 rounded" />
+            <div className="flex gap-2">
+              <Skeleton className="h-8 w-8 rounded" />
+              <Skeleton className="h-8 w-8 rounded" />
+              <Skeleton className="h-8 w-8 rounded" />
+            </div>
           </TableCell>
         </TableRow>
       ))}
