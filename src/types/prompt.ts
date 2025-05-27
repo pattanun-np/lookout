@@ -1,11 +1,25 @@
-import { prompts } from "@/db/schema";
+import { prompts, modelResults } from "@/db/schema";
 
 export type Prompt = Pick<
   typeof prompts.$inferSelect,
-  "id" | "content" | "visibilityScore" | "tags" | "geoRegion" | "completedAt"
+  | "id"
+  | "content"
+  | "visibilityScore"
+  | "tags"
+  | "geoRegion"
+  | "completedAt"
+  | "status"
 > & {
   top: { name: string; logo?: string }[];
+  results: (typeof modelResults.$inferSelect)[];
 };
+
+export type Status =
+  | "pending"
+  | "processing"
+  | "completed"
+  | "failed"
+  | "cancelled";
 
 export type Region =
   | "global"
