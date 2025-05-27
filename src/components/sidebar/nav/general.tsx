@@ -12,13 +12,13 @@ import {
 
 const generalNavItems = [
   {
-    name: "Raise an Issue",
+    name: "Report Issue",
     url: "https://github.com/10xuio/lookout/issues",
     icon: BugIcon,
   },
   {
-    name: "Help",
-    url: "mailto:support@lookout.so",
+    name: "Call Founder",
+    url: "https://cal.com/chaitanyya/lookout",
     icon: HelpCircleIcon,
   },
   {
