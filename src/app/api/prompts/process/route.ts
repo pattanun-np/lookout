@@ -17,9 +17,6 @@ export async function POST(request: NextRequest) {
 
     const prompt = await db.query.prompts.findFirst({
       where: eq(prompts.id, promptId),
-      with: {
-        topic: true,
-      },
     });
 
     if (!prompt) {
@@ -41,7 +38,7 @@ export async function POST(request: NextRequest) {
       })
       .where(eq(prompts.id, promptId));
 
-    processInBackground(promptId, prompt.content, prompt.topic.name);
+    processInBackground(promptId, prompt.content);
 
     return NextResponse.json({
       success: true,
@@ -61,11 +58,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function processInBackground(
-  promptId: string,
-  content: string,
-  topicName: string
-) {
+async function processInBackground(promptId: string, content: string) {
   const startTime = Date.now();
   console.log(`Starting background processing for prompt ${promptId}`);
 
@@ -76,7 +69,7 @@ async function processInBackground(
     console.log(`Processing prompt ${promptId} with all providers...`);
 
     const results = await withTimeout(
-      processPromptWithAllProviders(content, topicName),
+      processPromptWithAllProviders(content),
       240000,
       `Processing timeout for prompt ${promptId}`
     );
@@ -91,20 +84,20 @@ async function processInBackground(
           .values({
             promptId,
             model: result.provider,
-            response: result.response,
+            response: JSON.stringify(result.response),
             responseMetadata: result.metadata,
             status: result.error ? "failed" : "completed",
-            errorMessage: result.error || null,
-            results: [],
+            errorMessage: result.error ?? null,
+            results: result.response,
             completedAt: new Date(),
           })
           .onConflictDoUpdate({
             target: [modelResults.promptId, modelResults.model],
             set: {
-              response: result.response,
+              response: JSON.stringify(result.response),
               responseMetadata: result.metadata,
               status: result.error ? "failed" : "completed",
-              errorMessage: result.error || null,
+              errorMessage: result.error ?? null,
               updatedAt: new Date(),
               completedAt: new Date(),
             },

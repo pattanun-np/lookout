@@ -1,4 +1,16 @@
 import { prompts, modelResults } from "@/db/schema";
+import { SearchResult } from "@/lib/llm";
+
+export type LLMResult = Pick<
+  typeof modelResults.$inferSelect,
+  | "id"
+  | "model"
+  | "response"
+  | "status"
+  | "errorMessage"
+  | "completedAt"
+  | "results"
+>;
 
 export type Prompt = Pick<
   typeof prompts.$inferSelect,
@@ -10,7 +22,7 @@ export type Prompt = Pick<
   | "completedAt"
   | "status"
 > & {
-  top: { name: string; logo?: string }[];
+  top: SearchResult[];
   results: (typeof modelResults.$inferSelect)[];
 };
 

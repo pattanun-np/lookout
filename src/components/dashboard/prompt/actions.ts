@@ -45,7 +45,7 @@ export async function getPrompts(): Promise<Prompt[]> {
         id: prompt.id,
         content: prompt.content,
         visibilityScore: prompt.visibilityScore,
-        tags: prompt.tags || [],
+        tags: prompt.tags ?? [],
         geoRegion: prompt.geoRegion,
         completedAt: prompt.completedAt,
         status: prompt.status,

@@ -30,7 +30,7 @@ export function PromptTableRow({ prompt }: PromptTableRowProps) {
         {prompt.content}
       </TableCell>
       <TableCell>
-        <BrandList brands={prompt.top} />
+        <BrandList top={prompt.top} />
       </TableCell>
       <TableCell>
         <PromptTags tags={prompt.tags} />

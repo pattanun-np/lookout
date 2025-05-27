@@ -8,19 +8,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { ImageAvatar } from "@/components/brand-list";
 import { db } from "@/db";
 import { modelResults } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { Status } from "@/types/prompt";
-
-interface LLMResult {
-  id: string;
-  model: string;
-  response: string | null;
-  status: Status;
-  errorMessage?: string | null;
-  completedAt?: Date | null;
-}
+import { LLMResult } from "@/types/prompt";
+import { SearchResult } from "@/lib/llm";
 
 interface ResultsDialogProps {
   promptId: string;
@@ -33,14 +26,7 @@ async function getPromptResults(promptId: string): Promise<LLMResult[]> {
     where: eq(modelResults.promptId, promptId),
   });
 
-  return results.map((result) => ({
-    id: result.id,
-    model: result.model,
-    response: result.response,
-    status: result.status,
-    errorMessage: result.errorMessage,
-    completedAt: result.completedAt,
-  }));
+  return results;
 }
 
 function getModelDisplayName(model: string) {
@@ -90,9 +76,9 @@ function ResultsLoadingSkeleton() {
 }
 
 async function ResultsContent({ promptId }: { promptId: string }) {
-  const results = await getPromptResults(promptId);
+  const promptResults = await getPromptResults(promptId);
 
-  if (results.length === 0) {
+  if (promptResults.length === 0) {
     return (
       <p className="text-center text-muted-foreground py-8">
         No results available yet. Process the prompt first.
@@ -101,27 +87,30 @@ async function ResultsContent({ promptId }: { promptId: string }) {
   }
 
   return (
-    <div className="space-y-6">
-      {results.map((result) => (
-        <div key={result.id} className="border rounded-lg p-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-lg">
-              {getModelDisplayName(result.model)}
+    <div className="flex flex-col gap-6 w-full min-w-0">
+      {promptResults.map((res) => (
+        <div
+          key={res.id}
+          className="flex flex-col gap-2 border rounded-md px-4 py-2"
+        >
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-md truncate">
+              {getModelDisplayName(res.model)}
             </h3>
-            <Badge className={getStatusColor(result.status)}>
-              {result.status}
-            </Badge>
+            <Badge className={getStatusColor(res.status)}>{res.status}</Badge>
           </div>
 
-          {result.status === "completed" && result.response ? (
-            <div className="prose prose-sm max-w-none">
-              <div className="whitespace-pre-wrap text-sm">
-                {result.response}
+          {res.status === "completed" && res.response ? (
+            <div className="w-full min-w-0">
+              <div className="flex flex-col gap-2">
+                {res.results.map((result) => (
+                  <ResultItem key={result.title} result={result} />
+                ))}
               </div>
             </div>
-          ) : result.status === "failed" && result.errorMessage ? (
-            <div className="text-red-600 text-sm">
-              Error: {result.errorMessage}
+          ) : res.status === "failed" && res.errorMessage ? (
+            <div className="text-red-600 text-sm break-words overflow-wrap-anywhere">
+              Error: {res.errorMessage}
             </div>
           ) : (
             <div className="text-muted-foreground text-sm">
@@ -129,9 +118,9 @@ async function ResultsContent({ promptId }: { promptId: string }) {
             </div>
           )}
 
-          {result.completedAt && (
-            <div className="text-xs text-muted-foreground mt-2">
-              Completed: {result.completedAt.toLocaleString()}
+          {res.completedAt && (
+            <div className="text-xs text-muted-foreground">
+              Completed: {res.completedAt.toLocaleString()}
             </div>
           )}
         </div>
@@ -139,6 +128,34 @@ async function ResultsContent({ promptId }: { promptId: string }) {
     </div>
   );
 }
+
+const ResultItem = ({ result }: { result: SearchResult }) => {
+  return (
+    <div className="flex items-start gap-3 p-3 border rounded-md hover:bg-gray-50 transition-colors">
+      <div className="flex-shrink-0">
+        <ImageAvatar brand={result} />
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="font-semibold text-md text-gray-900 truncate">
+            {result.title}
+          </h3>
+        </div>
+
+        <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+          {result.snippet}
+        </p>
+
+        {result.url && (
+          <div className="text-xs text-gray-400 mt-2 truncate">
+            {result.url}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export function ResultsDialog({
   promptId,

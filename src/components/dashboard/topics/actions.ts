@@ -28,28 +28,6 @@ function extractDomainFromUrl(url: string): string {
   }
 }
 
-// FIX: this is not working
-async function fetchMetaDescription(url: string): Promise<string> {
-  try {
-    const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`;
-    const response = await fetch(urlWithProtocol, {
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; TopicBot/1.0)" },
-      signal: AbortSignal.timeout(5000),
-    });
-
-    if (!response.ok) throw new Error("Failed to fetch");
-
-    const html = await response.text();
-    const metaMatch = html.match(
-      /<meta\s+name="description"\s+content="([^"]*)"[^>]*>/i
-    );
-
-    return metaMatch?.[1] || `Website for ${extractDomainFromUrl(url)}`;
-  } catch {
-    return `Website for ${extractDomainFromUrl(url)}`;
-  }
-}
-
 export interface CreateTopicFromUrlData {
   url: string;
 }
@@ -63,7 +41,7 @@ export async function createTopicFromUrl(
 
     const domain = extractDomainFromUrl(data.url);
     const name = domain.split(".")[0];
-    const description = await fetchMetaDescription(data.url);
+    const description = `Topic for ${extractDomainFromUrl(data.url)}`;
 
     const [newTopic] = await db
       .insert(topics)

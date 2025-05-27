@@ -74,7 +74,7 @@ export function ProcessButton({ promptId, status }: ProcessButtonProps) {
   if (currentStatus === "processing") {
     return (
       <Button variant="outline" size="sm" disabled>
-        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+        <Loader2 className="h-4 w-4 animate-spin" />
       </Button>
     );
   }
