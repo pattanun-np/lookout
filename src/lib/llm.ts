@@ -30,12 +30,12 @@ const searchResultsSchema = z.array(resultSchema);
 export type SearchResult = z.infer<typeof resultSchema>;
 
 function createSearchPrompt(originalPrompt: string): string {
-  return `<PERSONALITY>
+  return `<ROLE>
   You are a helpful assistant that can search the web and analyze information based on the prompt.
-</PERSONALITY>
+</ROLE>
 
 <TASK>
-  Search and analyze information inspired by the prompt: "${originalPrompt}"
+  Search and analyze information for: "${originalPrompt}"
 </TASK>
 
 <INSTRUCTIONS>
@@ -103,9 +103,11 @@ export async function processPromptWithOpenAI(
       },
     });
 
+    const parsed = searchResultsSchema.parse(JSON.parse(result.text));
+
     return {
       provider: "openai",
-      response: JSON.parse(result.text),
+      response: parsed,
       metadata: { result },
     };
   } catch (error) {
@@ -130,7 +132,7 @@ export async function processPromptWithGoogle(
       output: "object",
       schema: searchResultsSchema,
       prompt,
-      maxTokens: 1000,
+      maxTokens: 5000,
     });
 
     if (!result.object) {
@@ -196,7 +198,7 @@ export async function processPromptWithClaude(
           content: prompt,
         },
       ],
-      max_tokens: 1000,
+      max_tokens: 5000,
       tools: [
         {
           type: "web_search_20250305",
