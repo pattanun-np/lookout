@@ -3,10 +3,34 @@ import { db } from "@/db";
 import { prompts } from "@/db/schema";
 import { getUser } from "@/auth/server";
 import { revalidatePath } from "next/cache";
+import { and, eq } from "drizzle-orm";
+
+export async function deletePrompt(promptId: string) {
+  const user = await getUser();
+  if (!user) throw new Error("User not found");
+
+  try {
+    await db
+      .delete(prompts)
+      .where(and(eq(prompts.id, promptId), eq(prompts.userId, user.id)));
+
+    revalidatePath("/dashboard/prompts");
+  } catch (error) {
+    console.error("Failed to delete prompt:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error occurred",
+    };
+  }
+}
 
 export async function getPrompts(): Promise<Prompt[]> {
+  const user = await getUser();
+  if (!user) throw new Error("User not found");
+
   try {
     const promptsWithResults = await db.query.prompts.findMany({
+      where: eq(prompts.userId, user.id),
       with: {
         modelResults: true,
       },

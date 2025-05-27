@@ -8,20 +8,26 @@ import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
 import type { Prompt } from "@/types/prompt";
 import { formatRelative } from "date-fns";
+import { deletePrompt } from "./actions";
+import { DeleteButton } from "./delete-button";
 
 interface PromptTableRowProps {
   prompt: Prompt;
 }
 
 export function PromptTableRow({ prompt }: PromptTableRowProps) {
+  const handleDelete = async () => {
+    "use server";
+    await deletePrompt(prompt.id);
+  };
+
   return (
     <TableRow>
       <TableCell>
         <Checkbox />
       </TableCell>
-      <TableCell className="font-medium max-w-xs">{prompt.content}</TableCell>
-      <TableCell>
-        <span className="font-medium">{prompt.visibilityScore}</span>
+      <TableCell className="font-medium max-w-xs overflow-hidden whitespace-normal break-words">
+        {prompt.content}
       </TableCell>
       <TableCell>
         <BrandList brands={prompt.top} />
@@ -45,6 +51,9 @@ export function PromptTableRow({ prompt }: PromptTableRowProps) {
               </Button>
             </ResultsDialog>
           )}
+          <form action={handleDelete}>
+            <DeleteButton />
+          </form>
         </div>
       </TableCell>
     </TableRow>

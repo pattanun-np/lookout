@@ -33,7 +33,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Update status to processing immediately
     await db
       .update(prompts)
       .set({
@@ -42,10 +41,8 @@ export async function POST(request: NextRequest) {
       })
       .where(eq(prompts.id, promptId));
 
-    // Trigger background processing without waiting
     processInBackground(promptId, prompt.content, prompt.topic.name);
 
-    // Return immediately to the user
     return NextResponse.json({
       success: true,
       message: "Prompt processing started",
@@ -64,7 +61,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Background processing function that runs independently
 async function processInBackground(
   promptId: string,
   content: string,
@@ -74,21 +70,20 @@ async function processInBackground(
   console.log(`Starting background processing for prompt ${promptId}`);
 
   try {
-    // Dynamic import to avoid loading heavy dependencies in the main request
     const { processPromptWithAllProviders } = await import("@/lib/llm");
     const { modelResults } = await import("@/db/schema");
 
     console.log(`Processing prompt ${promptId} with all providers...`);
+
     const results = await withTimeout(
       processPromptWithAllProviders(content, topicName),
-      240000, // 4 minutes timeout
+      240000,
       `Processing timeout for prompt ${promptId}`
     );
 
     let successCount = 0;
     let failureCount = 0;
 
-    // Save results to database with individual error handling
     for (const result of results) {
       try {
         await db
@@ -135,10 +130,8 @@ async function processInBackground(
       }
     }
 
-    // Determine overall status based on results
     const overallStatus = successCount > 0 ? "completed" : "failed";
 
-    // Update prompt status
     await db
       .update(prompts)
       .set({
@@ -160,7 +153,6 @@ async function processInBackground(
     );
 
     try {
-      // Update prompt status to failed
       await db
         .update(prompts)
         .set({

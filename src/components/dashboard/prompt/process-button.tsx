@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Check, Loader2, Play, RotateCcw } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Status } from "@/types/prompt";
@@ -12,7 +12,6 @@ interface ProcessButtonProps {
 }
 
 export function ProcessButton({ promptId, status }: ProcessButtonProps) {
-  const [isProcessing, setIsProcessing] = useState(status === "processing");
   const [currentStatus, setCurrentStatus] = useState(status);
   const router = useRouter();
 
@@ -24,10 +23,12 @@ export function ProcessButton({ promptId, status }: ProcessButtonProps) {
         const response = await fetch(`/api/prompts/${promptId}/status`);
         if (response.ok) {
           const data = await response.json();
-          setCurrentStatus(data.status);
+
+          if (data.status !== currentStatus) {
+            setCurrentStatus(data.status);
+          }
 
           if (data.status !== "processing") {
-            setIsProcessing(false);
             router.refresh();
             clearInterval(pollInterval);
           }
@@ -42,7 +43,6 @@ export function ProcessButton({ promptId, status }: ProcessButtonProps) {
 
   const handleProcess = async () => {
     try {
-      setIsProcessing(true);
       setCurrentStatus("processing");
 
       const response = await fetch("/api/prompts/process", {
@@ -59,7 +59,6 @@ export function ProcessButton({ promptId, status }: ProcessButtonProps) {
       console.log(data.message);
     } catch (error) {
       console.error("Failed to process prompt:", error);
-      setIsProcessing(false);
       setCurrentStatus("failed");
     }
   };
@@ -67,41 +66,30 @@ export function ProcessButton({ promptId, status }: ProcessButtonProps) {
   if (currentStatus === "completed") {
     return (
       <Button variant="outline" size="sm" disabled>
-        Completed
+        <Check className="h-4 w-4" />
       </Button>
     );
   }
 
-  if (currentStatus === "processing" || isProcessing) {
+  if (currentStatus === "processing") {
     return (
       <Button variant="outline" size="sm" disabled>
         <Loader2 className="h-4 w-4 animate-spin mr-2" />
-        Processing
       </Button>
     );
   }
 
   if (currentStatus === "failed") {
     return (
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleProcess}
-        disabled={isProcessing}
-      >
-        Retry
+      <Button variant="outline" size="sm" onClick={handleProcess}>
+        <RotateCcw className="h-4 w-4" />
       </Button>
     );
   }
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={handleProcess}
-      disabled={isProcessing}
-    >
-      Process
+    <Button variant="outline" size="sm" onClick={handleProcess}>
+      <Play className="h-4 w-4" />
     </Button>
   );
 }

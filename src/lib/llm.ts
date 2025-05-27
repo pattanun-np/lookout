@@ -45,10 +45,7 @@ export async function processPromptWithOpenAI(
     return {
       provider: "openai",
       response: result.text,
-      metadata: {
-        usage: result.usage,
-        finishReason: result.finishReason,
-      },
+      metadata: { result },
     };
   } catch (error) {
     return {
@@ -78,10 +75,7 @@ export async function processPromptWithGoogle(
     return {
       provider: "google",
       response: result.text,
-      metadata: {
-        usage: result.usage,
-        finishReason: result.finishReason,
-      },
+      metadata: { result },
     };
   } catch (error) {
     return {
@@ -132,10 +126,7 @@ export async function processPromptWithClaude(
     return {
       provider: "claude",
       response: responseText,
-      metadata: {
-        usage: result.usage,
-        finishReason: result.stop_reason,
-      },
+      metadata: { result },
     };
   } catch (error) {
     return {

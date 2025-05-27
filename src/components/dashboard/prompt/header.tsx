@@ -2,7 +2,6 @@ import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   MessageSquare,
-  Eye,
   Trophy,
   Tags,
   Globe,
@@ -21,12 +20,6 @@ export function PromptsTableHeader() {
           <div className="flex items-center gap-2">
             <MessageSquare className="h-4 w-4" />
             Prompt
-          </div>
-        </TableHead>
-        <TableHead>
-          <div className="flex items-center gap-2">
-            <Eye className="h-4 w-4" />
-            Visibility
           </div>
         </TableHead>
         <TableHead>
