@@ -8,8 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export const cleanUrl = (url: string) => {
   if (!url) return "";
 
-  url = url.replace("https://", "").replace("http://", "");
-  url = url.replace(/\/$/, "");
-
-  return url;
+  const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`;
+  const urlObj = new URL(urlWithProtocol);
+  return urlObj.hostname.toLowerCase().replace(/^www\./, "");
 };

@@ -4,13 +4,19 @@ import {
   PromptsTable,
 } from "@/components/dashboard";
 
-export default function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ topicId?: string }>;
+}) {
+  const { topicId } = await searchParams;
+
   return (
     <>
-      <PromptBreadcrumb />
+      <PromptBreadcrumb topicId={topicId} />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <PromptToolbar />
-        <PromptsTable />
+        <PromptsTable topicId={topicId} />
       </div>
     </>
   );

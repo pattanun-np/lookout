@@ -4,6 +4,7 @@ import { and, eq, desc } from "drizzle-orm";
 import { getUser } from "@/auth/server";
 import type { Topic } from "@/types/topic";
 import { revalidatePath } from "next/cache";
+import { cleanUrl } from "@/lib/utils";
 
 export async function deleteTopic(topicId: string) {
   const user = await getUser();
@@ -41,16 +42,6 @@ export async function getTopics(): Promise<Topic[]> {
   }
 }
 
-function extractDomainFromUrl(url: string): string {
-  try {
-    const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`;
-    const urlObj = new URL(urlWithProtocol);
-    return urlObj.hostname.replace("www.", "");
-  } catch {
-    return url.replace(/^(https?:\/\/)?(www\.)?/, "").split("/")[0];
-  }
-}
-
 export interface CreateTopicFromUrlData {
   url: string;
 }
@@ -62,9 +53,9 @@ export async function createTopicFromUrl(
     const user = await getUser();
     if (!user) throw new Error("User not found");
 
-    const domain = extractDomainFromUrl(data.url);
+    const domain = cleanUrl(data.url);
     const name = domain.split(".")[0];
-    const description = `Topic for ${extractDomainFromUrl(data.url)}`;
+    const description = `Topic for ${cleanUrl(data.url)}`;
 
     const [newTopic] = await db
       .insert(topics)

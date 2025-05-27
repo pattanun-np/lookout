@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       })
       .where(eq(prompts.id, promptId));
 
-    processInBackground(promptId, prompt.content);
+    processInBackground(promptId, prompt.content, prompt.geoRegion);
 
     return NextResponse.json({
       success: true,
@@ -58,7 +58,11 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function processInBackground(promptId: string, content: string) {
+async function processInBackground(
+  promptId: string,
+  content: string,
+  region: string
+) {
   const startTime = Date.now();
   console.log(`Starting background processing for prompt ${promptId}`);
 
@@ -69,7 +73,7 @@ async function processInBackground(promptId: string, content: string) {
     console.log(`Processing prompt ${promptId} with all providers...`);
 
     const results = await withTimeout(
-      processPromptWithAllProviders(content),
+      processPromptWithAllProviders(content, region),
       240000,
       `Processing timeout for prompt ${promptId}`
     );

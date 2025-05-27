@@ -1,17 +1,22 @@
+import { Suspense } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { config } from "@/lib/config";
-import Image from "next/image";
+import { TopicSelector, TopicSelectorSkeleton } from "./topic-selector";
+import { getTopics } from "../topics/actions";
 
-export function PromptBreadcrumb() {
+async function TopicSelectorWrapper({ topicId }: { topicId?: string }) {
+  const topics = await getTopics();
+  return <TopicSelector topics={topics} currentTopicId={topicId} />;
+}
+
+export function PromptBreadcrumb({ topicId }: { topicId?: string }) {
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
       <div className="flex items-center gap-2 px-4">
@@ -23,18 +28,9 @@ export function PromptBreadcrumb() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="#">
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={`https://img.logo.dev/tesla.com?token=${config.logoDevApi}`}
-                    alt="Tesla"
-                    width={20}
-                    height={20}
-                    className="rounded-md"
-                  />
-                  Tesla
-                </div>
-              </BreadcrumbLink>
+              <Suspense fallback={<TopicSelectorSkeleton />}>
+                <TopicSelectorWrapper topicId={topicId} />
+              </Suspense>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="hidden md:block" />
             <BreadcrumbItem>

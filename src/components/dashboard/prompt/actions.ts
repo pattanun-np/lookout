@@ -24,13 +24,15 @@ export async function deletePrompt(promptId: string) {
   }
 }
 
-export async function getPrompts(): Promise<Prompt[]> {
+export async function getPrompts(topicId?: string): Promise<Prompt[]> {
   const user = await getUser();
   if (!user) throw new Error("User not found");
 
   try {
     const promptsWithResults = await db.query.prompts.findMany({
-      where: eq(prompts.userId, user.id),
+      where: topicId
+        ? and(eq(prompts.userId, user.id), eq(prompts.topicId, topicId))
+        : eq(prompts.userId, user.id),
       with: {
         modelResults: true,
       },

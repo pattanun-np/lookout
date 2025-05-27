@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Check, Loader2, RotateCcw, Search } from "lucide-react";
+import { Loader2, RotateCcw, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Status } from "@/types/prompt";
@@ -62,14 +62,6 @@ export function ProcessButton({ promptId, status }: ProcessButtonProps) {
       setCurrentStatus("failed");
     }
   };
-
-  if (currentStatus === "completed") {
-    return (
-      <Button variant="outline" size="sm" disabled>
-        <Check className="h-4 w-4" />
-      </Button>
-    );
-  }
 
   if (currentStatus === "processing") {
     return (

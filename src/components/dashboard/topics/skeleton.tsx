@@ -12,8 +12,8 @@ export function TopicsTableSkeleton() {
           </TableCell>
           <TableCell className="font-medium max-w-xs">
             <div className="flex items-center gap-2">
-              <Skeleton className="h-6 w-6 rounded" />
-              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-6.5 w-6.5 rounded" />
+              <Skeleton className="h-4 w-28" />
             </div>
           </TableCell>
           <TableCell>
@@ -23,6 +23,9 @@ export function TopicsTableSkeleton() {
           </TableCell>
           <TableCell>
             <Skeleton className="h-4 w-12" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-8 w-8 rounded" />
           </TableCell>
         </TableRow>
       ))}

@@ -13,22 +13,22 @@ import {
 const generalNavItems = [
   {
     name: "Raise an Issue",
-    url: "#",
+    url: "https://github.com/10xuio/lookout/issues",
     icon: BugIcon,
   },
   {
     name: "Help",
-    url: "#",
+    url: "mailto:support@lookout.so",
     icon: HelpCircleIcon,
   },
   {
     name: "10xuio/lookout",
-    url: "#",
+    url: "https://github.com/10xuio/lookout",
     icon: GithubIcon,
   },
   {
     name: "lookout_so",
-    url: "#",
+    url: "https://x.com/lookout_so",
     icon: TwitterIcon,
   },
 ];

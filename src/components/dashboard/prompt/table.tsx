@@ -6,8 +6,8 @@ import { PromptTableRow } from "./row";
 import { getPrompts } from "./actions";
 import { Bot } from "lucide-react";
 
-async function PromptsTableContent() {
-  const prompts = await getPrompts();
+async function PromptsTableContent({ topicId }: { topicId?: string }) {
+  const prompts = await getPrompts(topicId);
 
   if (prompts.length === 0) {
     return (
@@ -29,13 +29,13 @@ async function PromptsTableContent() {
   );
 }
 
-export function PromptsTable() {
+export function PromptsTable({ topicId }: { topicId?: string }) {
   return (
     <div className="border rounded-lg overflow-hidden">
       <Table>
         <PromptsTableHeader />
         <Suspense fallback={<PromptsTableSkeleton />}>
-          <PromptsTableContent />
+          <PromptsTableContent topicId={topicId} />
         </Suspense>
       </Table>
     </div>

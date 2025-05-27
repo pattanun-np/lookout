@@ -29,17 +29,22 @@ const searchResultsSchema = z.array(resultSchema);
 
 export type SearchResult = z.infer<typeof resultSchema>;
 
-function createSearchPrompt(originalPrompt: string): string {
+function createSearchPrompt(originalPrompt: string, region: string): string {
   return `<ROLE>
-  You are a helpful assistant that can search the web and analyze information based on the prompt.
+  You are a helpful assistant that can search the web and analyze information based on the prompt and the user location.
 </ROLE>
 
 <TASK>
   Search and analyze information for: "${originalPrompt}"
 </TASK>
 
+<USER_LOCATION>
+  The user location is: "${region}"
+</USER_LOCATION>
+
 <INSTRUCTIONS>
   - You must only return information in the format of a array of JSON objects.
+  - You must only return information that is relevant to the prompt and the user location.
   - Each object must have the following keys:
     - title: Title of the brand/topic
     - url: string (the URL of the brand/topic) it must be a top level domain and not a subdomain or a path
@@ -90,7 +95,8 @@ function createSearchPrompt(originalPrompt: string): string {
 }
 
 export async function processPromptWithOpenAI(
-  prompt: string
+  prompt: string,
+  region: string
 ): Promise<LLMResponse> {
   try {
     const result = await generateText({
@@ -98,6 +104,9 @@ export async function processPromptWithOpenAI(
       prompt,
       tools: {
         web_search_preview: openai.tools.webSearchPreview({
+          userLocation: {
+            region,
+          },
           searchContextSize: "high",
         }),
       },
@@ -121,7 +130,8 @@ export async function processPromptWithOpenAI(
 }
 
 export async function processPromptWithGoogle(
-  prompt: string
+  prompt: string,
+  region: string
 ): Promise<LLMResponse> {
   try {
     const result = await generateObject({
@@ -129,10 +139,10 @@ export async function processPromptWithGoogle(
         useSearchGrounding: true,
         structuredOutputs: true,
       }),
+      maxTokens: 5000,
       output: "object",
       schema: searchResultsSchema,
       prompt,
-      maxTokens: 5000,
     });
 
     if (!result.object) {
@@ -144,7 +154,7 @@ export async function processPromptWithGoogle(
     return {
       provider: "google",
       response: parsed,
-      metadata: { result },
+      metadata: { result, region },
     };
   } catch (error) {
     return {
@@ -187,7 +197,8 @@ const claudeSchema = {
 const anthropic = new Anthropic();
 
 export async function processPromptWithClaude(
-  prompt: string
+  prompt: string,
+  region: string
 ): Promise<LLMResponse> {
   try {
     const result = await anthropic.messages.create({
@@ -203,6 +214,10 @@ export async function processPromptWithClaude(
         {
           type: "web_search_20250305",
           name: "web_search",
+          user_location: {
+            type: "approximate",
+            region,
+          },
           max_uses: 5,
         },
         {
@@ -242,13 +257,14 @@ export async function processPromptWithClaude(
 }
 
 export async function processPromptWithAllProviders(
-  prompt: string
+  prompt: string,
+  region: string
 ): Promise<LLMResponse[]> {
-  const searchPrompt = createSearchPrompt(prompt);
+  const searchPrompt = createSearchPrompt(prompt, region);
   const promises = [
-    processPromptWithOpenAI(searchPrompt),
-    processPromptWithGoogle(searchPrompt),
-    processPromptWithClaude(searchPrompt),
+    processPromptWithOpenAI(searchPrompt, region),
+    processPromptWithGoogle(searchPrompt, region),
+    processPromptWithClaude(searchPrompt, region),
   ];
 
   return Promise.all(promises);

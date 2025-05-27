@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface CreatePromptDialogProps {
   children: React.ReactNode;
@@ -98,7 +99,7 @@ export function CreatePromptDialog({ children }: CreatePromptDialogProps) {
               />
             </div>
 
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Skeleton className="w-full h-10" />}>
               <TopicSelect />
             </Suspense>
 

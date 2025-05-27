@@ -8,6 +8,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 const staticNavMain = [
   {
@@ -23,11 +24,13 @@ const staticNavMain = [
   {
     title: "Competitors",
     icon: BicepsFlexed,
+    disabled: true,
     url: "/dashboard/competitors",
   },
   {
     title: "Mentions",
     icon: AtSign,
+    disabled: true,
     url: "/dashboard/mentions",
   },
 ];
@@ -40,9 +43,19 @@ export function NavMain() {
         {staticNavMain.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild>
-              <Link href={item.url}>
+              <Link href={item.disabled ? "#" : item.url}>
                 <item.icon />
-                <span>{item.title}</span>
+                <span>
+                  {item.title}
+                  {item.disabled && (
+                    <Badge
+                      variant="secondary"
+                      className="text-xs ml-2 text-muted-foreground"
+                    >
+                      Soon
+                    </Badge>
+                  )}
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
