@@ -1,13 +1,36 @@
 import { db } from "@/db";
 import { topics } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { and, eq, desc } from "drizzle-orm";
 import { getUser } from "@/auth/server";
 import type { Topic } from "@/types/topic";
 import { revalidatePath } from "next/cache";
 
+export async function deleteTopic(topicId: string) {
+  const user = await getUser();
+  if (!user) throw new Error("User not found");
+
+  try {
+    await db
+      .delete(topics)
+      .where(and(eq(topics.id, topicId), eq(topics.userId, user.id)));
+
+    revalidatePath("/dashboard/topics");
+  } catch (error) {
+    console.error("Failed to delete topic:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error occurred",
+    };
+  }
+}
+
 export async function getTopics(): Promise<Topic[]> {
+  const user = await getUser();
+  if (!user) throw new Error("User not found");
+
   try {
     const topicsData = await db.query.topics.findMany({
+      where: eq(topics.userId, user.id),
       orderBy: desc(topics.createdAt),
     });
 

@@ -1,6 +1,6 @@
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MessageSquare, Eye, Trophy } from "lucide-react";
+import { MessageSquare, Eye, Settings, Check } from "lucide-react";
 
 export function TopicsTableHeader() {
   return (
@@ -23,8 +23,14 @@ export function TopicsTableHeader() {
         </TableHead>
         <TableHead>
           <div className="flex items-center gap-2">
-            <Trophy className="h-4 w-4" />
+            <Check className="h-4 w-4" />
             Active
+          </div>
+        </TableHead>
+        <TableHead>
+          <div className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            Actions
           </div>
         </TableHead>
       </TableRow>
