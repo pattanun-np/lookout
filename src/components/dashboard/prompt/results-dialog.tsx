@@ -155,7 +155,7 @@ const ResultItem = ({ result }: { result: SearchResult }) => {
   return (
     <div className="flex items-start gap-3 p-3 border rounded-md hover:bg-gray-50 transition-colors">
       <div className="flex-shrink-0">
-        <ImageAvatar brand={result} />
+        <ImageAvatar title={result.title} url={result.url} />
       </div>
 
       <div className="flex-1 min-w-0">

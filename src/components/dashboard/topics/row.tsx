@@ -15,9 +15,7 @@ export function TopicTableRow({ topic }: TopicTableRowProps) {
       </TableCell>
       <TableCell className="font-medium max-w-xs">
         <div className="flex items-center gap-2">
-          {topic.logo && (
-            <ImageAvatar brand={{ name: topic.name, logo: topic.logo }} />
-          )}
+          {topic.logo && <ImageAvatar title={topic.name} url={topic.logo} />}
           {topic.name}
         </div>
       </TableCell>
