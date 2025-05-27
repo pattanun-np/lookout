@@ -32,11 +32,11 @@ async function getPromptResults(promptId: string): Promise<LLMResult[]> {
 function getModelDisplayName(model: string) {
   switch (model) {
     case "openai":
-      return "OpenAI GPT-4";
+      return "ChatGPT";
     case "claude":
-      return "Claude 3.5 Sonnet";
+      return "Claude";
     case "google":
-      return "Gemini 1.5 Pro";
+      return "Gemini";
     default:
       return model;
   }
