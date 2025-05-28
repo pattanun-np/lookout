@@ -14,16 +14,13 @@ export function PromptsTableSkeleton() {
             <Skeleton className="h-4 w-48" />
           </TableCell>
           <TableCell>
-            <div className="flex gap-1">
-              <Skeleton className="h-7 w-7 rounded" />
-              <Skeleton className="h-7 w-7 rounded" />
-              <Skeleton className="h-7 w-7 rounded" />
-            </div>
+            <Skeleton className="h-5 w-16 rounded" />
           </TableCell>
           <TableCell>
             <div className="flex gap-1">
-              <Skeleton className="h-5 w-16 rounded" />
-              <Skeleton className="h-5 w-16 rounded" />
+              <Skeleton className="h-7 w-7 rounded" />
+              <Skeleton className="h-7 w-7 rounded" />
+              <Skeleton className="h-7 w-7 rounded" />
             </div>
           </TableCell>
           <TableCell>
