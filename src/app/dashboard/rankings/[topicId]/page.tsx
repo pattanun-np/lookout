@@ -5,17 +5,17 @@ import {
 } from "@/components/dashboard";
 
 export default async function Page({
-  searchParams,
+  params,
 }: {
-  searchParams: Promise<{ topicId?: string }>;
+  params: Promise<{ topicId: string }>;
 }) {
-  const { topicId } = await searchParams;
+  const { topicId } = await params;
 
   return (
     <>
-      <PromptBreadcrumb topicId={topicId} />
+      <PromptBreadcrumb topicId={topicId} page="rankings" />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <PromptToolbar />
+        <PromptToolbar topicId={topicId} />
         <PromptsTable topicId={topicId} />
       </div>
     </>

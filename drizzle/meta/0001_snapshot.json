@@ -1,6 +1,6 @@
 {
-  "id": "366de9f0-ef89-4417-833a-4ffa3fabb11e",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "4fb4ff2d-1168-4525-a3af-3a66850addb4",
+  "prevId": "366de9f0-ef89-4417-833a-4ffa3fabb11e",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -162,6 +162,34 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'[]'::jsonb"
+        },
+        "sources": {
+          "name": "sources",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::jsonb"
+        },
+        "citations": {
+          "name": "citations",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::jsonb"
+        },
+        "search_queries": {
+          "name": "search_queries",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::jsonb"
+        },
+        "grounding_metadata": {
+          "name": "grounding_metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{}'::jsonb"
         },
         "created_at": {
           "name": "created_at",

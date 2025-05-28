@@ -30,12 +30,15 @@ export async function getTopics(): Promise<Topic[]> {
   if (!user) throw new Error("User not found");
 
   try {
-    const topicsData = await db.query.topics.findMany({
+    const res = await db.query.topics.findMany({
       where: eq(topics.userId, user.id),
       orderBy: desc(topics.createdAt),
+      with: {
+        prompts: true,
+      },
     });
 
-    return topicsData;
+    return res;
   } catch (error) {
     console.error("Failed to fetch topics:", error);
     return [];
