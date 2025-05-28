@@ -1,4 +1,4 @@
-# LookOut - LLM Search Engine Ranking Tracker
+# LookOut - LLM Search Analytics
 
 <div align="center">
 
