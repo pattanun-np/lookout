@@ -14,6 +14,7 @@ import { modelResults } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { LLMResult } from "@/types/prompt";
 import { SearchResult } from "@/lib/llm";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ResultsDialogProps {
   promptId: string;
@@ -64,8 +65,8 @@ function ResultsLoadingSkeleton() {
           className="flex flex-col gap-2 border rounded-md px-4 py-2 animate-pulse"
         >
           <div className="flex items-center justify-between">
-            <div className="h-6 bg-gray-200 rounded w-32"></div>
-            <div className="h-6 bg-gray-200 rounded w-20"></div>
+            <Skeleton className="h-6 w-32 rounded" />
+            <Skeleton className="h-6 w-20 rounded" />
           </div>
 
           <div className="w-full min-w-0">
@@ -76,21 +77,21 @@ function ResultsLoadingSkeleton() {
                   className="flex items-start gap-3 p-3 border rounded-md"
                 >
                   <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-gray-200 rounded"></div>
+                    <Skeleton className="w-8 h-8 rounded" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="h-5 bg-gray-200 rounded w-3/4 mb-1"></div>
+                    <Skeleton className="h-5 w-3/4 mb-1 rounded" />
                     <div className="space-y-1">
-                      <div className="h-3 bg-gray-200 rounded w-full"></div>
-                      <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+                      <Skeleton className="h-3 w-full rounded" />
+                      <Skeleton className="h-3 w-5/6 rounded" />
                     </div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2 mt-2"></div>
+                    <Skeleton className="h-3 w-1/2 mt-2 rounded" />
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="h-3 bg-gray-200 rounded w-40"></div>
+          <Skeleton className="h-3 w-40 rounded" />
         </div>
       ))}
     </div>

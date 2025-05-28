@@ -1,15 +1,15 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BrandList } from "@/components/brand-list";
-import { PromptTags } from "./tags";
 import { ProcessButton } from "./process-button";
 import { ResultsDialog } from "./results-dialog";
 import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
+import { Eye, Hash } from "lucide-react";
 import type { Prompt } from "@/types/prompt";
 import { formatRelative } from "date-fns";
 import { deletePrompt } from "./actions";
 import { DeleteButton } from "./delete-button";
+import { cn, getVisibilityScoreColor } from "@/lib/utils";
 
 interface PromptTableRowProps {
   prompt: Prompt;
@@ -21,6 +21,8 @@ export function PromptTableRow({ prompt }: PromptTableRowProps) {
     await deletePrompt(prompt.id);
   };
 
+  const visibilityScore = parseFloat(prompt.visibilityScore ?? "0");
+
   return (
     <TableRow>
       <TableCell>
@@ -29,13 +31,22 @@ export function PromptTableRow({ prompt }: PromptTableRowProps) {
       <TableCell className="font-medium max-w-xs overflow-hidden whitespace-normal break-words">
         {prompt.content}
       </TableCell>
+      <TableCell
+        className={cn(
+          "font-medium text-sm items-center align-middle",
+          getVisibilityScoreColor(visibilityScore)
+        )}
+      >
+        <div className="flex items-center">
+          <Hash className="h-3.5 w-3.5 mr-1" /> {visibilityScore}%
+        </div>
+      </TableCell>
       <TableCell>
         <BrandList top={prompt.top} />
       </TableCell>
-      <TableCell>
-        <PromptTags tags={prompt.tags} />
+      <TableCell className="text-sm text-muted-foreground">
+        {prompt.geoRegion.toUpperCase()}
       </TableCell>
-      <TableCell>{prompt.geoRegion.toUpperCase()}</TableCell>
       <TableCell className="text-sm text-muted-foreground">
         {prompt.completedAt
           ? formatRelative(new Date(), new Date(prompt.completedAt))

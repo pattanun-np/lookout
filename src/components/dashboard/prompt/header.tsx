@@ -3,10 +3,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   MessageSquare,
   Trophy,
-  Tags,
   Globe,
   Calendar,
   Settings,
+  BarChart,
 } from "lucide-react";
 
 export function PromptsTableHeader() {
@@ -24,14 +24,14 @@ export function PromptsTableHeader() {
         </TableHead>
         <TableHead>
           <div className="flex items-center gap-2">
-            <Trophy className="h-4 w-4" />
-            Top Topics
+            <BarChart className="h-4 w-4" />
+            Ranking
           </div>
         </TableHead>
         <TableHead>
           <div className="flex items-center gap-2">
-            <Tags className="h-4 w-4" />
-            Tags
+            <Trophy className="h-4 w-4" />
+            Top Topics
           </div>
         </TableHead>
         <TableHead>

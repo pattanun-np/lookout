@@ -23,7 +23,7 @@ export type Prompt = Pick<
   | "status"
 > & {
   top: SearchResult[];
-  results: (typeof modelResults.$inferSelect)[];
+  results: LLMResult[];
 };
 
 export type Status =

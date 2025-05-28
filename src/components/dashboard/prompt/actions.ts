@@ -35,6 +35,7 @@ export async function getPrompts(topicId?: string): Promise<Prompt[]> {
         : eq(prompts.userId, user.id),
       with: {
         modelResults: true,
+        topic: true,
       },
     });
 
