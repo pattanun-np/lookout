@@ -30,7 +30,6 @@ const staticNavMain = [
   {
     title: "Mentions",
     icon: AtSign,
-    disabled: true,
     url: "/dashboard/mentions",
   },
 ];
