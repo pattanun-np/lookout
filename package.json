@@ -27,6 +27,7 @@
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
+    "@upstash/qstash": "^2.8.1",
     "ai": "^4.3.16",
     "better-auth": "^1.2.8",
     "class-variance-authority": "^0.7.1",
