@@ -1,134 +1,78 @@
-# LookOut - LLM Search Analytics
-
 <div align="center">
-
-[![GitHub stars](https://img.shields.io/github/stars/10xuio/lookout?style=social)](https://github.com/10xuio/lookout)
-[![GitHub forks](https://img.shields.io/github/forks/10xuio/lookout?style=social)](https://github.com/10xuio/lookout/network/members)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
-
-**The first open-source platform to track your brand's ranking across ChatGPT, Claude, Gemini, and other LLM search engines**
-
+  <img src="public/logo.png" alt="LookOut Logo" width="120" height="120">
+  
+  # LookOut - AI Search Ranking Tracker
+  
+  **Monitor your brand's visibility across ChatGPT, Claude, Gemini and emerging AI search engines**
+  
+  [![GitHub stars](https://img.shields.io/github/stars/10xuio/lookout?style=flat-square)](https://github.com/10xuio/lookout)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square)](https://www.typescriptlang.org/)
+  [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square)](https://nextjs.org/)
+  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 </div>
 
----
+<br />
 
-## 🎯 Why LookOut?
+## Overview
 
-As AI search engines like ChatGPT, Claude, and Gemini become the new Google, **your brand's visibility in LLM responses directly impacts your business**. LookOut helps marketing teams:
+LookOut is the first open-source platform designed to track and optimize your brand's ranking in AI-powered search results. As LLMs become the primary gateway for information discovery, your visibility in AI responses directly impacts your business growth.
 
-- 📊 **Track Rankings**: Monitor where your brand appears in AI search results
-- 🔍 **Multi-LLM Coverage**: Test across OpenAI GPT-4, Claude 3.5 Sonnet, and Google Gemini
-- 📈 **Competitive Analysis**: See how you rank against competitors
-- 🎯 **SEO for AI**: Optimize your content for LLM search engines
-- 📱 **Real-time Monitoring**: Get instant alerts when rankings change
+### Key Benefits
 
-## ✨ Key Features
+- **Multi-LLM Coverage**: Monitor rankings across OpenAI GPT-4, Claude 3.5, and Google Gemini simultaneously
+- **Real-time Analytics**: Track ranking changes and competitor movements as they happen
+- **Self-hosted**: Complete control over your data and infrastructure
+- **Developer-friendly**: RESTful APIs, TypeScript, and modern architecture
 
-### 🤖 Multi-LLM Search Engine Support
+## Quick Start
 
-- **OpenAI GPT-4** with web search capabilities
-- **Claude 3.5 Sonnet** with real-time web access
-- **Google Gemini** with search grounding
-- **Extensible architecture** for future LLM providers
-
-### 🚀 Performance & Scalability
-
-- **Background Processing**: Non-blocking prompt processing using Vercel Functions
-- **Concurrent Execution**: All LLM providers queried simultaneously
-- **Real-time Updates**: Live status polling every 2 seconds
-- **Fault Tolerance**: Individual provider failures don't block results
-- **Auto-scaling**: Handles traffic spikes automatically
-
-### 📊 Advanced Analytics
-
-- **Ranking Trends**: Track position changes over time
-- **Competitor Monitoring**: Compare against industry leaders
-- **Geographic Targeting**: Region-specific search results
-- **Custom Prompts**: Test specific search scenarios
-- **Export Reports**: CSV/PDF reporting for stakeholders
-
-### 🛠️ Developer Experience
-
-- **Self-hosted**: Full control over your data
-- **API-first**: RESTful APIs for integrations
-- **TypeScript**: End-to-end type safety
-- **Modern Stack**: Next.js 15, React 19, Tailwind CSS
-- **Database Agnostic**: PostgreSQL with Drizzle ORM
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js 18+ or Bun
-- PostgreSQL database
-- API keys for OpenAI, Anthropic, and Google
-
-### Installation
+Get LookOut running in under 5 minutes:
 
 ```bash
-# Clone the repository
+# Clone and install
 git clone https://github.com/10xuio/lookout.git
 cd lookout
-
-# Install dependencies
 bun install
 
-# Set up environment variables
+# Configure environment
 cp .env.example .env.local
-# Edit .env.local with your API keys and database URL
+# Add your API keys to .env.local
 
-# Run database migrations
+# Setup database
 bun run db:migrate
 
-# Start the development server
+# Launch
 bun run dev
 ```
 
-### Environment Variables
+Visit `http://localhost:3000` to start tracking your AI search rankings.
 
-```env
-# Database
-POSTGRES_URL=postgresql://user:password@localhost:5432/lookout
+## Features
 
-# LLM API Keys
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-GOOGLE_GENERATIVE_AI_API_KEY=...
-BETTER_AUTH_SECRET=...
-NEXT_PUBLIC_LOGO_API=...
-```
+### Supported AI Search Engines
 
-## 📖 Usage
+| Provider   | Model             | Search Capability      | Status         |
+| ---------- | ----------------- | ---------------------- | -------------- |
+| OpenAI     | GPT-4 with Browse | Web search integration | ✅ Active      |
+| Anthropic  | Claude 3.5 Sonnet | Real-time web access   | ✅ Active      |
+| Google     | Gemini Pro        | Search grounding       | ✅ Active      |
+| Perplexity | Perplexity API    | Native search          | 🔄 Coming Soon |
 
-### 1. Create Search Prompts
+### Core Capabilities
 
-```typescript
-// Example: Track "best CRM software" rankings
-const prompt =
-  "What are the top 5 CRM software solutions for small businesses?";
-```
+| Feature                   | Description                                          |
+| ------------------------- | ---------------------------------------------------- |
+| **Concurrent Processing** | Query all LLMs simultaneously with fault tolerance   |
+| **Background Jobs**       | Non-blocking processing via Vercel Functions         |
+| **Ranking History**       | Track position changes over time with visualizations |
+| **Competitive Analysis**  | Monitor multiple brands in the same queries          |
+| **Export & Reporting**    | Generate CSV/PDF reports for stakeholders            |
+| **API Access**            | Full programmatic control via REST endpoints         |
 
-### 2. Monitor Results Across LLMs
+## Architecture
 
-LookOut automatically queries all configured LLM providers and tracks:
-
-- Brand mentions and rankings
-- Snippet content and context
-- URL references and authority
-- Competitive positioning
-
-### 3. Analyze Trends
-
-- View ranking changes over time
-- Compare performance across different LLMs
-- Identify optimization opportunities
-- Export data for reporting
-
-## 🏗️ Architecture
-
-### Background Processing Pipeline
+LookOut uses a modern, scalable architecture optimized for performance:
 
 ```mermaid
 graph LR
@@ -142,13 +86,7 @@ graph LR
     F --> G[Real-time Updates]
 ```
 
-### API Endpoints
-
-- `POST /api/prompts/process` - Queue prompt for processing
-- `GET /api/prompts/[id]/status` - Check processing status
-- `GET /api/prompts/[id]/results` - Retrieve results
-
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Category       | Technology                                     |
 | -------------- | ---------------------------------------------- |
@@ -160,7 +98,7 @@ graph LR
 | **Deployment** | Vercel, Docker support                         |
 | **Monitoring** | Built-in analytics dashboard                   |
 
-## 🔧 Configuration
+## Configuration
 
 ### Vercel Deployment
 
@@ -175,7 +113,7 @@ graph LR
 }
 ```
 
-## 📊 Performance Benchmarks
+## Performance Benchmarks
 
 - **Response Time**: < 2s for status checks
 - **Processing Time**: 30-60s for full LLM analysis
@@ -183,7 +121,7 @@ graph LR
 - **Uptime**: 99.9% SLA
 - **Data Retention**: Unlimited history
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! See our Contributing Guide for details.
 
@@ -212,7 +150,7 @@ bun run lint
 - [ ] **Advanced Analytics** - ML-powered insights
 - [ ] **Mobile App** - iOS/Android companion apps
 
-## 📈 Use Cases
+## Use Cases
 
 ### Marketing Teams
 
@@ -235,7 +173,7 @@ bun run lint
 - Track campaign effectiveness
 - Ensure accurate information propagation
 
-## 🏆 Why Choose LookOut?
+## Why Choose LookOut?
 
 | Feature                  | LookOut | Competitors |
 | ------------------------ | ------- | ----------- |
@@ -246,11 +184,11 @@ bun run lint
 | **API Access**           | ✅      | Limited     |
 | **Custom Prompts**       | ✅      | ❌          |
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Vercel](https://vercel.com) for hosting and serverless functions
 - [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), and [Google](https://ai.google.dev) for LLM APIs
