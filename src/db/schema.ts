@@ -108,6 +108,19 @@ export const status = pgEnum("prompt_status", [
   "cancelled",
 ]);
 
+export const mentionTypeEnum = pgEnum("mention_type", [
+  "direct",
+  "indirect",
+  "competitive",
+]);
+export const sentimentEnum = pgEnum("sentiment", [
+  "positive",
+  "negative",
+  "neutral",
+]);
+
+export type modelStatus = "pending" | "processing" | "completed" | "failed";
+
 export const prompts = pgTable("prompts", {
   id: uuid("id").primaryKey().defaultRandom(),
   topicId: uuid("topic_id")
@@ -164,8 +177,30 @@ export const modelResults = pgTable(
   ]
 );
 
+export const mentions = pgTable("mentions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  promptId: uuid("prompt_id")
+    .notNull()
+    .references(() => prompts.id, { onDelete: "cascade" }),
+  topicId: uuid("topic_id")
+    .notNull()
+    .references(() => topics.id, { onDelete: "cascade" }),
+  modelResultId: uuid("model_result_id")
+    .notNull()
+    .references(() => modelResults.id, { onDelete: "cascade" }),
+  model: modelEnum("model").notNull(),
+  mentionType: mentionTypeEnum("mention_type").notNull(),
+  position: numeric("position"), // Position in the response (1st, 2nd, etc.)
+  context: text("context").notNull(), // The surrounding text context
+  sentiment: sentimentEnum("sentiment").notNull(),
+  confidence: numeric("confidence", { precision: 3, scale: 2 }), // AI confidence in the mention
+  extractedText: text("extracted_text").notNull(), // The actual mention text
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const topicsRelations = relations(topics, ({ many }) => ({
   prompts: many(prompts),
+  mentions: many(mentions),
 }));
 
 export const userRelations = relations(user, ({ many }) => ({
@@ -174,6 +209,7 @@ export const userRelations = relations(user, ({ many }) => ({
 
 export const promptsRelations = relations(prompts, ({ many, one }) => ({
   modelResults: many(modelResults),
+  mentions: many(mentions),
   topic: one(topics, {
     fields: [prompts.topicId],
     references: [topics.id],
@@ -184,5 +220,20 @@ export const modelResultsRelations = relations(modelResults, ({ one }) => ({
   prompt: one(prompts, {
     fields: [modelResults.promptId],
     references: [prompts.id],
+  }),
+}));
+
+export const mentionsRelations = relations(mentions, ({ one }) => ({
+  prompt: one(prompts, {
+    fields: [mentions.promptId],
+    references: [prompts.id],
+  }),
+  topic: one(topics, {
+    fields: [mentions.topicId],
+    references: [topics.id],
+  }),
+  modelResult: one(modelResults, {
+    fields: [mentions.modelResultId],
+    references: [modelResults.id],
   }),
 }));

@@ -1,12 +1,12 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
+import { AtSign, Eye, Trash2 } from "lucide-react";
 import Link from "next/link";
 import type { Topic } from "@/types/topic";
 import { ImageAvatar } from "@/components/brand-list";
-import { DeleteButton } from "./delete-button";
 import { deleteTopic } from "./actions";
+import { LoadingButton } from "@/components/loading-button";
 
 interface TopicTableRowProps {
   topic: Topic;
@@ -23,26 +23,34 @@ export function TopicTableRow({ topic }: TopicTableRowProps) {
       <TableCell>
         <Checkbox />
       </TableCell>
-      <TableCell className="font-medium max-w-xs">
-        <div className="flex items-center gap-2">
+      <TableCell>
+        <div className="flex items-center gap-2 font-medium max-w-xs">
           {topic.logo && <ImageAvatar title={topic.name} url={topic.logo} />}
           {topic.name}
         </div>
       </TableCell>
       <TableCell>
-        <span className="font-medium">{topic.description}</span>
+        <span className="font-medium max-w-xs overflow-hidden whitespace-normal break-words">
+          {topic.description}
+        </span>
       </TableCell>
       <TableCell>{topic.isActive ? "Active" : "Inactive"}</TableCell>
       <TableCell>
         <div className="flex items-center gap-2">
           <Link href={`/dashboard/rankings/${topic.id}`}>
             <Button variant="outline" size="sm" className="gap-2">
-              <Eye className="h-4 w-4" />
-              View Rankings
+              <Eye aria-label="View rankings" className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Link href={`/dashboard/mentions/${topic.id}`}>
+            <Button variant="outline" size="sm" className="gap-2">
+              <AtSign aria-label="View mentions" className="h-4 w-4" />
             </Button>
           </Link>
           <form action={handleDelete}>
-            <DeleteButton />
+            <LoadingButton>
+              <Trash2 aria-label="Delete topic" className="h-4 w-4" />
+            </LoadingButton>
           </form>
         </div>
       </TableCell>

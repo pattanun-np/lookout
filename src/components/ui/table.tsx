@@ -69,7 +69,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "text-muted-foreground bg-sidebar border-r last:border-r-0 h-10 px-3 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&:has([role=checkbox])]:w-10 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-muted-foreground bg-sidebar border-r last:border-r-0 h-10 px-3 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:w-10 [&>[role=checkbox]]:translate-y-[2px]",
         className
       )}
       {...props}
@@ -125,7 +125,7 @@ function TableEmptyState({
             <h3 className="text-sm font-medium text-foreground mb-1">
               {title}
             </h3>
-            <p className="text-sm text-muted-foreground max-w-sm">
+            <p className="text-sm text-muted-foreground max-w-sm whitespace-pre-wrap">
               {description}
             </p>
           </div>

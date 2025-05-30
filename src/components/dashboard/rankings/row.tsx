@@ -3,20 +3,19 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { BrandList } from "@/components/brand-list";
 import { ProcessButton } from "./process-button";
 import { Button } from "@/components/ui/button";
-import { Eye, Hash } from "lucide-react";
+import { Eye, Hash, Trash2 } from "lucide-react";
 import Link from "next/link";
 import type { Prompt } from "@/types/prompt";
 import { formatRelative } from "date-fns";
 import { deletePrompt } from "./actions";
-import { DeleteButton } from "./delete-button";
+import { LoadingButton } from "../../loading-button";
 import { cn, getVisibilityScoreColor } from "@/lib/utils";
 
 interface PromptTableRowProps {
   prompt: Prompt;
-  topicId?: string;
 }
 
-export function PromptTableRow({ prompt, topicId }: PromptTableRowProps) {
+export function PromptTableRow({ prompt }: PromptTableRowProps) {
   const handleDelete = async () => {
     "use server";
     await deletePrompt(prompt.id);
@@ -29,8 +28,10 @@ export function PromptTableRow({ prompt, topicId }: PromptTableRowProps) {
       <TableCell>
         <Checkbox />
       </TableCell>
-      <TableCell className="font-medium max-w-xs overflow-hidden whitespace-normal break-words">
-        {prompt.content}
+      <TableCell>
+        <div className="font-medium max-w-xs overflow-hidden whitespace-normal break-words">
+          {prompt.content}
+        </div>
       </TableCell>
       <TableCell
         className={cn(
@@ -48,7 +49,7 @@ export function PromptTableRow({ prompt, topicId }: PromptTableRowProps) {
       <TableCell className="text-sm text-muted-foreground">
         {prompt.geoRegion.toUpperCase()}
       </TableCell>
-      <TableCell className="text-sm text-muted-foreground">
+      <TableCell className="text-sm text-muted-foreground truncate">
         {prompt.completedAt
           ? formatRelative(new Date(prompt.completedAt), new Date())
           : "Pending"}
@@ -57,15 +58,23 @@ export function PromptTableRow({ prompt, topicId }: PromptTableRowProps) {
         <div className="flex gap-2">
           <ProcessButton promptId={prompt.id} status={prompt.status} />
           {prompt.status === "completed" && (
-            <Link href={`/dashboard/rankings/${topicId}/${prompt.id}/results`}>
-              <Button variant="outline" size="sm" className="gap-2">
+            <Link
+              href={`/dashboard/rankings/${prompt.topic?.id}/${prompt.id}/results`}
+            >
+              <Button
+                aria-label="View results"
+                variant="outline"
+                size="sm"
+                className="gap-2"
+              >
                 <Eye className="h-4 w-4" />
-                View Results
               </Button>
             </Link>
           )}
           <form action={handleDelete}>
-            <DeleteButton />
+            <LoadingButton>
+              <Trash2 aria-label="Delete prompt" className="h-4 w-4" />
+            </LoadingButton>
           </form>
         </div>
       </TableCell>
