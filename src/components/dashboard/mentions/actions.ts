@@ -10,6 +10,7 @@ export async function analyzeMentions() {
   if (!user) throw new Error("User not found");
 
   try {
+    const cookies = await getCookieHeader();
     const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
@@ -18,7 +19,7 @@ export async function analyzeMentions() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Cookie: await getCookieHeader(),
+          Cookie: cookies,
         },
       }
     );
