@@ -3,7 +3,7 @@ import * as React from "react";
 import { NavMain } from "./nav/main";
 import { NavGeneral } from "./nav/general";
 import { NavUser } from "./nav/user";
-import { TeamSwitcher } from "./team-switcher";
+import { BrandComp } from "./nav/brand";
 import {
   Sidebar,
   SidebarContent,
@@ -16,7 +16,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher />
+        <BrandComp />
       </SidebarHeader>
       <SidebarContent>
         <NavMain />

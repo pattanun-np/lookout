@@ -16,7 +16,7 @@ import {
 import { getTopics } from "../topics/actions";
 import { createPrompt } from "./actions";
 import { revalidatePath } from "next/cache";
-import { TopicSelectionSubmitButton } from "./topic-selection-submit-button";
+import { SubmitButton } from "@/components/submit-button";
 import { redirect } from "next/navigation";
 import { TopicSelect } from "../topic-selector";
 import { LoadingButton } from "../../loading-button";
@@ -183,7 +183,11 @@ async function TopicSelectionStep() {
         </Suspense>
 
         <div className="flex gap-2">
-          <TopicSelectionSubmitButton />
+          <SubmitButton
+            loadingText="Generating..."
+            buttonText="Generate Suggestions"
+            icon="wand-sparkles"
+          />
         </div>
       </form>
       <OrDivider />

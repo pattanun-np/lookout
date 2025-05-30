@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { createTopicFromUrl } from "./actions";
-import { SubmitButton } from "./submit-button";
+import { SubmitButton } from "@/components/submit-button";
 
 interface CreateTopicDialogProps {
   children: React.ReactNode;
@@ -55,7 +55,11 @@ export function CreateTopicDialog({ children }: CreateTopicDialogProps) {
             </div>
           </div>
           <DialogFooter>
-            <SubmitButton />
+            <SubmitButton
+              loadingText="Creating..."
+              buttonText="Create Topic"
+              icon="plus"
+            />
           </DialogFooter>
         </form>
       </DialogContent>

@@ -161,7 +161,6 @@ export async function processUserMentions(userId: string) {
     };
   } catch (error) {
     console.error("Failed to analyze mentions:", error);
-    throw error;
   }
 }
 

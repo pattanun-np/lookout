@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createPrompt } from "./actions";
 import { TopicSelect } from "../topic-selector";
-import { SubmitButton } from "./submit-button";
+import { SubmitButton } from "@/components/submit-button";
 import { Region } from "@/types/prompt";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -117,7 +117,11 @@ export function CreatePromptDialog({ children }: CreatePromptDialogProps) {
             </div>
           </div>
           <DialogFooter>
-            <SubmitButton />
+            <SubmitButton
+              loadingText="Creating..."
+              buttonText="Create Prompt"
+              icon="plus"
+            />
           </DialogFooter>
         </form>
       </DialogContent>

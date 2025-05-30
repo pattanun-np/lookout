@@ -5,6 +5,7 @@ import { Loader2, RotateCcw, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Status } from "@/types/prompt";
+import { toast } from "sonner";
 
 interface ProcessButtonProps {
   promptId: string;
@@ -32,11 +33,19 @@ export function ProcessButton({ promptId, status }: ProcessButtonProps) {
             router.refresh();
             clearInterval(pollInterval);
           }
+
+          if (data.status === "failed") {
+            toast.error("Failed to process prompt");
+          }
+
+          if (data.status === "completed") {
+            toast.success("Prompt processed successfully");
+          }
         }
       } catch (error) {
         console.error("Failed to poll status:", error);
       }
-    }, 2000);
+    }, 4000);
 
     return () => clearInterval(pollInterval);
   }, [currentStatus, promptId, router]);

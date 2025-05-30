@@ -13,7 +13,7 @@ export function MentionsTableSkeleton() {
           <TableCell>
             <div className="flex items-center gap-2">
               <Skeleton className="h-6.5 w-6.5 rounded" />
-              <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-4 w-full" />
             </div>
           </TableCell>
           <TableCell>
@@ -26,9 +26,9 @@ export function MentionsTableSkeleton() {
             </div>
           </TableCell>
           <TableCell>
-            <div className="space-y-1">
+            <div className="max-w-xs space-y-1">
               <Skeleton className="h-4 w-40" />
-              <Skeleton className="h-3 w-56" />
+              <Skeleton className="h-3 w-full" />
             </div>
           </TableCell>
           <TableCell>

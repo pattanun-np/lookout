@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { withTimeout } from "@/lib/timeout";
 import { getVisibilityScore } from "@/lib/utils";
 import { LLMResult, Status } from "@/types/prompt";
+import { waitUntil } from "@vercel/functions";
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,11 +44,14 @@ export async function POST(request: NextRequest) {
       })
       .where(eq(prompts.id, promptId));
 
-    processInBackground(
-      promptId,
-      prompt.content,
-      prompt.geoRegion,
-      prompt.topic?.name || ""
+    // TODO: work out a better strategy for background processing
+    waitUntil(
+      processInBackground(
+        promptId,
+        prompt.content,
+        prompt.geoRegion,
+        prompt.topic?.name ?? ""
+      )
     );
 
     return NextResponse.json({

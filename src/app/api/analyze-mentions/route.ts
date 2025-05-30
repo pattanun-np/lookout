@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getUser } from "@/auth/server";
 import { processUserMentions } from "@/lib/mentions/background-processor";
+import { waitUntil } from "@vercel/functions";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -12,13 +13,8 @@ export async function POST() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    processUserMentions(user.id)
-      .then(() => {
-        console.log(`Mention analysis completed for user: ${user.id}`);
-      })
-      .catch((error) => {
-        console.error(`Mention analysis failed for user: ${user.id}`, error);
-      });
+    // TODO: work out a better strategy for background processing
+    waitUntil(processUserMentions(user.id));
 
     return NextResponse.json({
       success: true,
