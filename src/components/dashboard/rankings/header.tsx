@@ -25,7 +25,7 @@ export function PromptsTableHeader() {
         <TableHead className="w-1/8">
           <div className="flex items-center gap-2">
             <BarChart className="h-4 w-4" />
-            Ranking
+            Visibility Score
           </div>
         </TableHead>
         <TableHead className="w-1/8">
