@@ -12,6 +12,7 @@ import {
 import { signIn } from "@/auth/client";
 import { useState } from "react";
 import { GoogleIcon } from "@/components/ui/icons";
+import Image from "next/image";
 
 export function LoginForm({
   className,
@@ -36,8 +37,20 @@ export function LoginForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back!</CardTitle>
+        <CardHeader className="text-center flex flex-col gap-2 items-center">
+          <a
+            href="https://lookout.so"
+            className="flex items-center gap-2 self-center font-medium"
+          >
+            <Image
+              src="/logo.png"
+              alt="Lookout"
+              width={100}
+              height={100}
+              className="rounded-md"
+            />
+          </a>
+          <CardTitle className="text-xl">Welcome to Lookout!</CardTitle>
           <CardDescription>Login with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
