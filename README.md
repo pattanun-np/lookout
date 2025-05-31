@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/logo.png" alt="LookOut Logo" width="120" height="120">
+  <img src="public/logo-sq.png" alt="LookOut Logo" width="120" height="120">
   
   # LookOut - AI Search Ranking Tracker
   
