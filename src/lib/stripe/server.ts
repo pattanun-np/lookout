@@ -79,7 +79,7 @@ export const PLANS = {
   enterprise: {
     name: "Enterprise",
     price: 1000,
-    priceId: "",
+    priceId: process.env.STRIPE_ENTERPRISE_PRICE_ID!,
     features: [
       "Unlimited prompts per day",
       "Unlimited topics or brands",

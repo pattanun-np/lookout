@@ -38,8 +38,7 @@ export function Pricing({
       </div>
 
       <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-        {Object.entries(PLANS).map(([key, plan]) => {
-          const planKey = key as PlanType;
+        {Object.entries(PLANS).map(([planKey, plan]) => {
           const isCurrentPlan = planKey === currentPlan;
           const isPopular = planKey === "pro";
 
