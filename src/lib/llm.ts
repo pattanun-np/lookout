@@ -1,10 +1,11 @@
 import { openai } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
+import { perplexity } from "@ai-sdk/perplexity";
 import { Anthropic } from "@anthropic-ai/sdk";
 import { generateObject, generateText } from "ai";
 import { z } from "zod";
 
-export type LLMProvider = "openai" | "claude" | "google";
+export type LLMProvider = "openai" | "claude" | "google" | "perplexity";
 
 // Enhanced source schema with additional metadata
 export const sourceSchema = z.object({
@@ -322,6 +323,142 @@ export async function processPromptWithGoogle(
   }
 }
 
+export async function processPromptWithPerplexity(
+  prompt: string,
+  region: string
+): Promise<LLMResponse> {
+  try {
+    // First try to get structured results using generateObject
+    const structuredResult = await generateObject({
+      model: perplexity("sonar-pro"),
+      maxTokens: 5000,
+      output: "object",
+      schema: searchResultsSchema,
+      prompt: `${prompt}\n\nPlease provide your response as a JSON array of objects with the following structure: [{"title": "Brand/Topic Name", "url": "https://example.com", "snippet": "Brief description..."}]`,
+    });
+
+    if (structuredResult.object) {
+      const parsed = searchResultsSchema.parse(structuredResult.object);
+
+      // Also get text result to access sources
+      const textResult = await generateText({
+        model: perplexity("sonar-pro"),
+        prompt,
+      });
+
+      // Extract sources from Perplexity response
+      const sources: Source[] = [];
+      const citations: Array<{
+        text: string;
+        sourceIndices: number[];
+        confidence?: number;
+      }> = [];
+      const searchQueries: string[] = [];
+
+      try {
+        // Access Perplexity-specific sources from text result
+        if (textResult.sources && Array.isArray(textResult.sources)) {
+          textResult.sources.forEach((source: unknown) => {
+            const s = source as Record<string, unknown>;
+            sources.push({
+              title: (s.title as string) || "",
+              url: (s.url as string) || "",
+              snippet: (s.snippet as string) || "",
+              domain:
+                s.url && typeof s.url === "string"
+                  ? new URL(s.url).hostname
+                  : undefined,
+            });
+          });
+        }
+      } catch {
+        // Silently continue if extraction fails
+      }
+
+      return {
+        provider: "perplexity",
+        response: parsed,
+        metadata: { structuredResult, textResult, region },
+        sources,
+        citations,
+        searchQueries,
+        groundingMetadata: {
+          structured: structuredResult as unknown as Record<string, unknown>,
+          text: textResult as unknown as Record<string, unknown>,
+        },
+      };
+    }
+
+    // Fallback to text generation if structured output fails
+    const result = await generateText({
+      model: perplexity("sonar-pro"),
+      maxTokens: 5000,
+      prompt,
+    });
+
+    // Parse the text response as JSON to get structured results
+    let parsed: typeof searchResultsSchema._type;
+    try {
+      parsed = searchResultsSchema.parse(JSON.parse(result.text));
+    } catch {
+      // If parsing fails, create a single result from the response
+      parsed = [
+        {
+          title: "Perplexity Response",
+          url: "https://perplexity.ai",
+          snippet: result.text.slice(0, 100) + "...",
+        },
+      ];
+    }
+
+    // Extract sources from Perplexity response
+    const sources: Source[] = [];
+    const citations: Array<{
+      text: string;
+      sourceIndices: number[];
+      confidence?: number;
+    }> = [];
+    const searchQueries: string[] = [];
+
+    try {
+      // Access Perplexity-specific sources
+      if (result.sources && Array.isArray(result.sources)) {
+        result.sources.forEach((source: unknown) => {
+          const s = source as Record<string, unknown>;
+          sources.push({
+            title: (s.title as string) || "",
+            url: (s.url as string) || "",
+            snippet: (s.snippet as string) || "",
+            domain:
+              s.url && typeof s.url === "string"
+                ? new URL(s.url).hostname
+                : undefined,
+          });
+        });
+      }
+    } catch {
+      // Silently continue if extraction fails
+    }
+
+    return {
+      provider: "perplexity",
+      response: parsed,
+      metadata: { result, region },
+      sources,
+      citations,
+      searchQueries,
+      groundingMetadata: result as unknown as Record<string, unknown>,
+    };
+  } catch (error) {
+    return {
+      provider: "perplexity",
+      response: [],
+      metadata: {},
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
 const claudeSchema = {
   type: "object" as const,
   properties: {
@@ -477,6 +614,7 @@ export async function processPromptWithAllProviders(
   const promises = [
     processPromptWithOpenAI(searchPrompt, region),
     processPromptWithGoogle(searchPrompt, region),
+    processPromptWithPerplexity(searchPrompt, region),
     processPromptWithClaude(searchPrompt, region),
   ];
 
