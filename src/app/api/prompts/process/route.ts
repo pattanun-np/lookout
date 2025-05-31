@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { prompts } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { waitUntil } from "@vercel/functions";
 import { processInBackground } from "@/lib/background/rankings";
+import { checkUsageLimit } from "@/lib/subscription";
+import { getUser } from "@/auth/server";
 
 export async function POST(request: NextRequest) {
   try {
+    const authUser = await getUser();
+
+    if (!authUser) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { promptId } = await request.json();
 
     if (!promptId) {
@@ -16,8 +24,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const usageCheck = await checkUsageLimit(authUser.id);
+
+    if (!usageCheck.canProcess) {
+      const message =
+        usageCheck.limit === -1
+          ? "Your subscription is not active"
+          : `Usage limit exceeded. You've used ${usageCheck.currentUsage}/${usageCheck.limit} prompts this month. Upgrade your plan to process more prompts.`;
+
+      return NextResponse.json(
+        {
+          error: "Usage limit exceeded",
+          message,
+          currentUsage: usageCheck.currentUsage,
+          limit: usageCheck.limit,
+          plan: usageCheck.plan,
+        },
+        { status: 403 }
+      );
+    }
+
     const prompt = await db.query.prompts.findFirst({
-      where: eq(prompts.id, promptId),
+      where: and(eq(prompts.id, promptId), eq(prompts.userId, authUser.id)),
       with: {
         topic: true,
       },
@@ -57,6 +85,11 @@ export async function POST(request: NextRequest) {
       message: "Prompt processing started",
       promptId,
       status: "processing",
+      usage: {
+        current: usageCheck.currentUsage + 1,
+        limit: usageCheck.limit,
+        plan: usageCheck.plan,
+      },
     });
   } catch (error) {
     console.error("API Error:", error);
