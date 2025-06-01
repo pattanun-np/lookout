@@ -1,9 +1,13 @@
-import { StripeResultPage } from "@/components/stripe-result-page";
+import { StripeResult } from "@/components/stripe-result";
 
 interface PageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ success: string; canceled: string }>;
 }
 
-export default function Page({ searchParams }: PageProps) {
-  return <StripeResultPage searchParams={searchParams} />;
+export default async function Page({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const success = params.success === "true";
+  const canceled = params.canceled === "true";
+
+  return <StripeResult success={success} canceled={canceled} />;
 }

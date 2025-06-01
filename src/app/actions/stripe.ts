@@ -79,5 +79,7 @@ export async function createCheckoutSession(planType: string) {
   }
 
   // Redirect outside of try-catch to avoid logging NEXT_REDIRECT as error
-  redirect(checkoutUrl);
+  if (checkoutUrl) {
+    redirect(checkoutUrl);
+  }
 }
