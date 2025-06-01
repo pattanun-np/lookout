@@ -1,9 +1,10 @@
 import { Onboarding } from "@/components/onboarding";
 
 interface PageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export default function Page({ searchParams }: PageProps) {
-  return <Onboarding searchParams={searchParams} />;
+export default async function Page({ searchParams }: PageProps) {
+  const params = await searchParams;
+  return <Onboarding searchParams={params} />;
 }
