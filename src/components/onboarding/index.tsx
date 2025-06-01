@@ -16,7 +16,11 @@ interface Step {
   isLocked: boolean;
 }
 
-export async function Onboarding() {
+interface OnboardingProps {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+export async function Onboarding({ searchParams }: OnboardingProps) {
   const topics = await getTopics();
   const hasTopics = topics.length > 0;
 
@@ -34,7 +38,11 @@ export async function Onboarding() {
     }
   }
 
-  if (hasAnalysis) redirect("/dashboard/rankings");
+  // Don't redirect if we have Stripe parameters to show popup
+  const hasStripeParams =
+    searchParams?.success === "true" || searchParams?.canceled === "true";
+
+  if (hasAnalysis && !hasStripeParams) redirect("/dashboard/rankings");
 
   const steps: Step[] = [
     {

@@ -8,6 +8,8 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/auth/server";
 
 export async function createCheckoutSession(planType: string) {
+  let checkoutUrl: string;
+
   try {
     const authUser = await getUser();
 
@@ -58,8 +60,8 @@ export async function createCheckoutSession(planType: string) {
         },
       ],
       mode: "subscription",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/stripe-result?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/stripe-result?canceled=true`,
       metadata: {
         userId: authUser.id,
         planType,
@@ -70,9 +72,12 @@ export async function createCheckoutSession(planType: string) {
       throw new Error("Failed to create checkout URL");
     }
 
-    redirect(checkoutSession.url);
+    checkoutUrl = checkoutSession.url;
   } catch (error) {
     console.error("Stripe checkout error:", error);
     throw error;
   }
+
+  // Redirect outside of try-catch to avoid logging NEXT_REDIRECT as error
+  redirect(checkoutUrl);
 }
