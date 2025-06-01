@@ -57,12 +57,12 @@ Visit `http://localhost:3000` to start tracking your AI search rankings.
 
 ### Supported AI Search Engines
 
-| Provider   | Model             | Search Capability      | Status         |
-| ---------- | ----------------- | ---------------------- | -------------- |
-| OpenAI     | GPT-4 with Browse | Web search integration | ✅ Active      |
-| Anthropic  | Claude 3.5 Sonnet | Real-time web access   | ✅ Active      |
-| Google     | Gemini Pro        | Search grounding       | ✅ Active      |
-| Perplexity | Perplexity API    | Native search          | 🔄 Coming Soon |
+| Provider   | Model             | Search Capability      | Status    |
+| ---------- | ----------------- | ---------------------- | --------- |
+| OpenAI     | GPT-4 with Browse | Web search integration | ✅ Active |
+| Anthropic  | Claude 3.5 Sonnet | Real-time web access   | ✅ Active |
+| Google     | Gemini Pro        | Search grounding       | ✅ Active |
+| Perplexity | Perplexity API    | Native search          | ✅ Active |
 
 ### Core Capabilities
 
