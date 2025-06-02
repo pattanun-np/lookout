@@ -14,6 +14,10 @@
 
 <br />
 
+<div align="center">
+  <img src="public/demo.png" alt="LookOut Demo">
+</div>
+
 ## Overview
 
 LookOut is the first open-source platform designed to track and optimize your brand's ranking in AI-powered search results. As LLMs become the primary gateway for information discovery, your visibility in AI responses directly impacts your business growth.
