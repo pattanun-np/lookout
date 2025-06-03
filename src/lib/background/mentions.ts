@@ -13,10 +13,10 @@ import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import PQueue from "p-queue";
+import { withRetry } from "../timeout";
 
 const BATCH_SIZE = 5;
 const PARALLEL_BATCHES = 3;
-const MAX_RETRIES = 3;
 
 const MentionSchema = z.object({
   mentions: z.array(
@@ -173,10 +173,16 @@ export async function processUserMentions(userId: string, topicId?: string) {
                 if (!result.results || !result.prompt) continue;
 
                 try {
-                  const detectedMentions = await detectMentionsInResponse(
-                    JSON.stringify(result.results),
-                    result.prompt.topic.name,
-                    result.prompt.topic.description ?? ""
+                  const detectedMentions = await withRetry(
+                    async () => {
+                      return await detectMentionsInResponse(
+                        JSON.stringify(result.results),
+                        result.prompt.topic.name,
+                        result.prompt.topic.description ?? ""
+                      );
+                    },
+                    3,
+                    1000
                   );
 
                   const mappedMentions = detectedMentions.map((mention) => ({
@@ -305,8 +311,7 @@ ${response}
 async function detectMentionsInResponse(
   response: string,
   brandName: string,
-  brandDescription: string,
-  retryCount = 0
+  brandDescription: string
 ): Promise<DetectedMention[]> {
   try {
     const { object } = await generateObject({
@@ -314,7 +319,7 @@ async function detectMentionsInResponse(
       schema: MentionSchema,
       prompt: getPrompt(response, brandName, brandDescription),
       temperature: 0.1,
-      maxTokens: 1000,
+      maxTokens: 10000,
     });
 
     const validMentions = (object.mentions || []).filter(
@@ -326,25 +331,7 @@ async function detectMentionsInResponse(
 
     return validMentions;
   } catch (error) {
-    if (retryCount < MAX_RETRIES) {
-      const delay = Math.min(1000 * Math.pow(2, retryCount), 10000);
-      console.log(
-        `Retrying mention detection (attempt ${
-          retryCount + 1
-        }/${MAX_RETRIES}) after ${delay}ms`
-      );
-
-      await new Promise((resolve) => setTimeout(resolve, delay));
-
-      return detectMentionsInResponse(
-        response,
-        brandName,
-        brandDescription,
-        retryCount + 1
-      );
-    }
-
-    console.error("Error detecting mentions after retries:", error);
+    console.error("Error detecting mentions:", error);
     return [];
   }
 }
