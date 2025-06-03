@@ -5,19 +5,10 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import { getUser } from "@/auth/server";
-import { getUserSubscription } from "@/lib/subscription";
-import { PLANS } from "@/lib/stripe/server";
 
 export async function BrandComp() {
   const user = await getUser();
-  let planName = "Free Plan";
-
-  if (user) {
-    const subscription = await getUserSubscription(user.id);
-    if (subscription) {
-      planName = PLANS[subscription.plan].name + " Plan";
-    }
-  }
+  const planName = "Free Plan";
 
   return (
     <SidebarMenu>
@@ -37,7 +28,9 @@ export async function BrandComp() {
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-semibold">Lookout</span>
-            <span className="truncate text-xs">{planName}</span>
+            <span className="truncate text-xs capitalize">
+              {user?.plan ?? planName} Plan
+            </span>
           </div>
         </SidebarMenuButton>
       </SidebarMenuItem>
