@@ -1,7 +1,8 @@
 import { db } from "@/db";
-import { user, prompts, topics } from "@/db/schema";
+import { prompts, topics } from "@/db/schema";
 import { eq, and, gte, count } from "drizzle-orm";
-import { PLANS, PlanType } from "./stripe/server";
+import { isPlanType, PLANS, PlanType } from "./stripe/server";
+import { getUser } from "@/auth/server";
 
 export interface UserSubscription {
   plan: PlanType;
@@ -12,29 +13,20 @@ export interface UserSubscription {
   limits: (typeof PLANS)[PlanType]["limits"];
 }
 
-export async function getUserSubscription(
-  userId: string
-): Promise<UserSubscription | null> {
-  const dbUser = await db.query.user.findFirst({
-    where: eq(user.id, userId),
-  });
-
-  if (!dbUser) {
-    return null;
-  }
-
-  const plan = (dbUser.plan as PlanType) || "free";
-  const planConfig = PLANS[plan];
+const getUserPlan = async (): Promise<UserSubscription> => {
+  const user = await getUser();
+  const plan = user?.plan && isPlanType(user.plan) ? user.plan : "free";
+  const subDetails = PLANS[plan] ?? PLANS.free;
 
   return {
     plan,
-    planStatus: dbUser.planStatus || "active",
-    stripeCustomerId: dbUser.stripeCustomerId,
-    stripeSubscriptionId: dbUser.stripeSubscriptionId,
-    stripeCurrentPeriodEnd: dbUser.stripeCurrentPeriodEnd,
-    limits: planConfig.limits,
+    planStatus: user?.planStatus || "active",
+    stripeCustomerId: user?.stripeCustomerId ?? null,
+    stripeSubscriptionId: user?.stripeSubscriptionId ?? null,
+    stripeCurrentPeriodEnd: user?.stripeCurrentPeriodEnd ?? null,
+    limits: subDetails.limits,
   };
-}
+};
 
 export async function checkUsageLimit(userId: string): Promise<{
   canProcess: boolean;
@@ -42,9 +34,9 @@ export async function checkUsageLimit(userId: string): Promise<{
   limit: number;
   plan: PlanType;
 }> {
-  const subscription = await getUserSubscription(userId);
+  const user = await getUser();
 
-  if (!subscription) {
+  if (!user) {
     return {
       canProcess: false,
       currentUsage: 0,
@@ -53,18 +45,18 @@ export async function checkUsageLimit(userId: string): Promise<{
     };
   }
 
-  if (subscription.planStatus !== "active") {
+  const userPlan = await getUserPlan();
+
+  if (user.planStatus !== "active") {
     return {
       canProcess: false,
       currentUsage: 0,
-      limit:
-        subscription.limits.promptsPerDay ||
-        subscription.limits.promptsPerMonth,
-      plan: subscription.plan,
+      limit: userPlan.limits.promptsPerDay || userPlan.limits.promptsPerMonth,
+      plan: userPlan.plan,
     };
   }
 
-  if (subscription.plan === "free") {
+  if (userPlan.plan === "free") {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
@@ -76,13 +68,13 @@ export async function checkUsageLimit(userId: string): Promise<{
       );
 
     const currentUsage = usage?.count || 0;
-    const limit = subscription.limits.promptsPerMonth;
+    const limit = userPlan.limits.promptsPerMonth;
 
     return {
       canProcess: currentUsage < limit,
       currentUsage,
       limit,
-      plan: subscription.plan,
+      plan: userPlan.plan,
     };
   }
 
@@ -95,24 +87,26 @@ export async function checkUsageLimit(userId: string): Promise<{
     .where(and(eq(prompts.userId, userId), gte(prompts.createdAt, startOfDay)));
 
   const currentUsage = usage?.count || 0;
-  const limit = subscription.limits.promptsPerDay;
+  const limit = userPlan.limits.promptsPerDay;
 
   return {
     canProcess: currentUsage < limit,
     currentUsage,
     limit,
-    plan: subscription.plan,
+    plan: userPlan.plan,
   };
 }
 
-export async function getAvailableProviders(userId: string): Promise<string[]> {
-  const subscription = await getUserSubscription(userId);
+export async function getAvailableProviders(): Promise<string[]> {
+  const user = await getUser();
 
-  if (!subscription || subscription.planStatus !== "active") {
+  if (!user || user.planStatus !== "active") {
     return [...PLANS.free.limits.providers];
   }
 
-  return [...subscription.limits.providers];
+  const userPlan = await getUserPlan();
+
+  return [...userPlan.limits.providers];
 }
 
 export function getProcessingPriority(plan: PlanType) {
@@ -125,9 +119,9 @@ export async function checkTopicLimit(userId: string): Promise<{
   limit: number;
   plan: PlanType;
 }> {
-  const subscription = await getUserSubscription(userId);
+  const user = await getUser();
 
-  if (!subscription) {
+  if (!user) {
     return {
       canCreateTopic: false,
       currentTopics: 0,
@@ -136,12 +130,14 @@ export async function checkTopicLimit(userId: string): Promise<{
     };
   }
 
-  if (subscription.planStatus !== "active") {
+  const userPlan = await getUserPlan();
+
+  if (user.planStatus !== "active") {
     return {
       canCreateTopic: false,
       currentTopics: 0,
-      limit: subscription.limits.topicsLimit,
-      plan: subscription.plan,
+      limit: userPlan.limits.topicsLimit,
+      plan: userPlan.plan,
     };
   }
 
@@ -151,12 +147,12 @@ export async function checkTopicLimit(userId: string): Promise<{
     .where(and(eq(topics.userId, userId), eq(topics.isActive, true)));
 
   const currentTopics = topicCount?.count || 0;
-  const limit = subscription.limits.topicsLimit;
+  const limit = userPlan.limits.topicsLimit;
 
   return {
     canCreateTopic: currentTopics < limit,
     currentTopics,
     limit,
-    plan: subscription.plan,
+    plan: userPlan.plan,
   };
 }
