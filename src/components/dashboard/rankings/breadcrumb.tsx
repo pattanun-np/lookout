@@ -40,12 +40,12 @@ export function RankingsBreadcrumb({
         />
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
+            <BreadcrumbItem>
               <Suspense fallback={<TopicSelectorSkeleton />}>
                 <TopicSelectorWrapper topicId={topicId} />
               </Suspense>
             </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbSeparator />
             <BreadcrumbItem>
               {page === "rankings" ? (
                 <BreadcrumbPage>Rankings</BreadcrumbPage>
@@ -55,7 +55,7 @@ export function RankingsBreadcrumb({
             </BreadcrumbItem>
             {page === "results" && (
               <>
-                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbPage>Results</BreadcrumbPage>
                 </BreadcrumbItem>

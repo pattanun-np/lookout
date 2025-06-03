@@ -104,39 +104,41 @@ function PromptSummaryCard({
     : "Processing results";
 
   return (
-    <Card>
+    <Card className="shadow-none">
       <CardHeader>
-        <div className="space-y-3">
-          <CardTitle className="text-xl leading-tight">
-            {prompt.content}
-          </CardTitle>
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-1.5">
-              <Globe className="h-4 w-4" />
-              <span>{prompt.geoRegion.toUpperCase()}</span>
+        <div className="flex flex-col gap-2 sm:flex-row-reverse sm:items-center sm:justify-between">
+          <CardAction>
+            <div className="flex items-center gap-2">
+              <div
+                className={cn(
+                  "flex items-center gap-1 rounded-md text-sm font-medium",
+                  getVisibilityScoreColor(visibilityScore)
+                )}
+              >
+                <Hash className="h-3 w-3" />
+                {visibilityScore}%
+              </div>
+              <Badge variant={getStatusVariant(prompt.status as Status)}>
+                {prompt.status}
+              </Badge>
             </div>
-            <div className="flex items-center gap-1.5">
-              <Calendar className="h-4 w-4" />
-              <span>{completedDate}</span>
+          </CardAction>
+          <div className="space-y-3">
+            <CardTitle className="text-xl leading-tight">
+              {prompt.content}
+            </CardTitle>
+            <div className="flex items-center gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <Globe className="h-4 w-4" />
+                <span>{prompt.geoRegion.toUpperCase()}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Calendar className="h-4 w-4" />
+                <span>{completedDate}</span>
+              </div>
             </div>
           </div>
         </div>
-        <CardAction>
-          <div className="flex items-center gap-2">
-            <div
-              className={cn(
-                "flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium",
-                getVisibilityScoreColor(visibilityScore)
-              )}
-            >
-              <Hash className="h-3 w-3" />
-              {visibilityScore}%
-            </div>
-            <Badge variant={getStatusVariant(prompt.status as Status)}>
-              {prompt.status}
-            </Badge>
-          </div>
-        </CardAction>
       </CardHeader>
     </Card>
   );
@@ -162,26 +164,28 @@ function ModelResultItem({ result }: { result: LLMResult }) {
     : null;
 
   return (
-    <Card>
+    <Card className="shadow-none">
       <CardHeader>
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-            <Bot className="h-5 w-5" />
-          </div>
-          <div className="space-y-1">
-            <CardTitle className="text-lg">
-              {getModelDisplayName(result.model)}
-            </CardTitle>
-            {completedDate && (
-              <CardDescription>Completed {completedDate}</CardDescription>
-            )}
+        <div className="flex flex-col gap-2 sm:flex-row-reverse sm:items-center sm:justify-between">
+          <CardAction>
+            <Badge variant={getStatusVariant(result.status as Status)}>
+              {result.status}
+            </Badge>
+          </CardAction>
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
+              <Bot className="h-5 w-5" />
+            </div>
+            <div className="space-y-1">
+              <CardTitle className="text-lg">
+                {getModelDisplayName(result.model)}
+              </CardTitle>
+              {completedDate && (
+                <CardDescription>Completed {completedDate}</CardDescription>
+              )}
+            </div>
           </div>
         </div>
-        <CardAction>
-          <Badge variant={getStatusVariant(result.status as Status)}>
-            {result.status}
-          </Badge>
-        </CardAction>
       </CardHeader>
       <CardContent>
         <ResultContent result={result} />

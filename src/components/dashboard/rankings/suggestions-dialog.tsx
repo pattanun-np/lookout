@@ -179,7 +179,7 @@ async function TopicSelectionStep() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mb-4">
       <form action={handleTopicSelection} className="space-y-4">
         <Suspense fallback={<Skeleton className="h-10 w-full" />}>
           <TopicSelect label="Choose a topic for personalized suggestions" />
@@ -275,7 +275,7 @@ export async function SuggestionsList({
   }
 
   return (
-    <div className="space-y-3 mr-3">
+    <div className="space-y-3">
       {!topicId && (
         <div className="mb-4 p-3 bg-muted/50 rounded-lg" role="alert">
           <p className="text-sm text-muted-foreground">
@@ -320,7 +320,7 @@ export function SuggestionsDialog({
                 <TopicSelectionStep />
               </Suspense>
               <div
-                className="mt-6 overflow-y-auto"
+                className="overflow-y-auto"
                 style={{ maxHeight: `${MAX_DIALOG_HEIGHT}px` }}
               >
                 <h4 className="text-sm font-medium mb-3">
@@ -333,7 +333,12 @@ export function SuggestionsDialog({
             </>
           ) : (
             <Suspense fallback={<SuggestionsListSkeleton />}>
-              <SuggestionsList topicId={topicId} />
+              <div
+                className="overflow-y-auto pr-1"
+                style={{ maxHeight: `${MAX_DIALOG_HEIGHT}px` }}
+              >
+                <SuggestionsList topicId={topicId} />
+              </div>
             </Suspense>
           )}
         </div>

@@ -33,12 +33,12 @@ export function MentionsBreadcrumb({ topicId }: { topicId?: string }) {
         />
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
+            <BreadcrumbItem>
               <Suspense fallback={<TopicSelectorSkeleton />}>
                 <TopicSelectorWrapper topicId={topicId} />
               </Suspense>
             </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>Mentions</BreadcrumbPage>
             </BreadcrumbItem>

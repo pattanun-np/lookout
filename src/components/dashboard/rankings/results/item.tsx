@@ -12,7 +12,6 @@ export function ResultItem({ result }: { result: SearchResult }) {
           <div className="flex-shrink-0 mt-0.5">
             <ImageAvatar title={result.title} url={result.url} />
           </div>
-
           <div className="flex-1 min-w-0 space-y-2">
             <div className="flex items-start justify-between gap-2">
               <h4 className="font-medium text-sm leading-tight line-clamp-2">

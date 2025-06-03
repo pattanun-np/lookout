@@ -36,7 +36,13 @@ function ProcessMentionsButton({ topicId }: { topicId?: string }) {
 
   if (currentStatus === "processing") {
     return (
-      <Button aria-label="Processing" variant="outline" size="sm" disabled>
+      <Button
+        aria-label="Processing"
+        variant="outline"
+        size="sm"
+        disabled
+        className="flex-1 sm:flex-none"
+      >
         <Loader2 className="h-4 w-4 animate-spin" /> Processing...
       </Button>
     );
@@ -49,6 +55,7 @@ function ProcessMentionsButton({ topicId }: { topicId?: string }) {
         variant="outline"
         size="sm"
         onClick={handleProcess}
+        className="flex-1 sm:flex-none"
       >
         <RotateCcw className="h-4 w-4" /> Retry
       </Button>
@@ -61,6 +68,7 @@ function ProcessMentionsButton({ topicId }: { topicId?: string }) {
       variant="outline"
       size="sm"
       onClick={handleProcess}
+      className="flex-1 sm:flex-none"
     >
       <RefreshCw className="h-4 w-4" /> Process Mentions
     </Button>

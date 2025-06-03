@@ -24,7 +24,7 @@ export function TopicTableRow({ topic }: TopicTableRowProps) {
         <Checkbox />
       </TableCell>
       <TableCell>
-        <div className="flex items-center gap-2 font-medium max-w-xs">
+        <div className="flex items-center gap-2 font-medium max-w-xs overflow-hidden">
           {topic.logo && <ImageAvatar title={topic.name} url={topic.logo} />}
           {topic.name}
         </div>

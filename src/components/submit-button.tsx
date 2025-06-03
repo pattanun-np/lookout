@@ -24,7 +24,7 @@ export function SubmitButton({
   const IconComponent = Icon[icon];
 
   return (
-    <Button type="submit" disabled={pending} className="gap-2">
+    <Button type="submit" disabled={pending} className="gap-2 w-full sm:w-auto">
       {pending ? (
         <Loader className="h-4 w-4 animate-spin" />
       ) : (

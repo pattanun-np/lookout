@@ -88,7 +88,7 @@ export async function TopicSelect({
         {label}
       </label>
       <Select name="topicId" required defaultValue={currentTopicId}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Select a topic..." />
         </SelectTrigger>
         <SelectContent>
