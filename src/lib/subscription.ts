@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { prompts, topics } from "@/db/schema";
-import { eq, and, gte, count } from "drizzle-orm";
+import { eq, and, count } from "drizzle-orm";
 import { isPlanType, PLANS, PlanType } from "./stripe/server";
 import { getUser } from "@/auth/server";
 
@@ -51,24 +51,19 @@ export async function checkUsageLimit(userId: string): Promise<{
     return {
       canProcess: false,
       currentUsage: 0,
-      limit: userPlan.limits.promptsPerDay || userPlan.limits.promptsPerMonth,
+      limit: userPlan.limits.promptsPerDay,
       plan: userPlan.plan,
     };
   }
 
   if (userPlan.plan === "free") {
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
     const [usage] = await db
       .select({ count: count() })
       .from(prompts)
-      .where(
-        and(eq(prompts.userId, userId), gte(prompts.createdAt, startOfMonth))
-      );
+      .where(and(eq(prompts.userId, userId)));
 
-    const currentUsage = usage?.count || 0;
-    const limit = userPlan.limits.promptsPerMonth;
+    const currentUsage = usage?.count ?? 0;
+    const limit = userPlan.limits.promptsPerDay;
 
     return {
       canProcess: currentUsage < limit,
@@ -78,15 +73,12 @@ export async function checkUsageLimit(userId: string): Promise<{
     };
   }
 
-  const now = new Date();
-  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
   const [usage] = await db
     .select({ count: count() })
     .from(prompts)
-    .where(and(eq(prompts.userId, userId), gte(prompts.createdAt, startOfDay)));
+    .where(and(eq(prompts.userId, userId)));
 
-  const currentUsage = usage?.count || 0;
+  const currentUsage = usage?.count ?? 0;
   const limit = userPlan.limits.promptsPerDay;
 
   return {

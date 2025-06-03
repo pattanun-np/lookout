@@ -31,8 +31,7 @@ export const PLANS = {
       "Basic analytics",
     ],
     limits: {
-      promptsPerDay: 0,
-      promptsPerMonth: -1,
+      promptsPerDay: 30,
       topicsLimit: 1,
       providers: ["openai"],
       priority: "low",
@@ -51,7 +50,6 @@ export const PLANS = {
     ],
     limits: {
       promptsPerDay: 25,
-      promptsPerMonth: -1,
       topicsLimit: 5,
       providers: ["openai", "claude", "google"],
       priority: "normal",
@@ -72,7 +70,6 @@ export const PLANS = {
     ],
     limits: {
       promptsPerDay: 100,
-      promptsPerMonth: -1,
       topicsLimit: 10,
       providers: ["openai", "claude", "google"],
       priority: "high",
@@ -90,9 +87,8 @@ export const PLANS = {
       "Advanced analytics & reporting",
     ],
     limits: {
-      promptsPerDay: -1,
-      promptsPerMonth: -1,
-      topicsLimit: -1,
+      promptsPerDay: 10000,
+      topicsLimit: 100,
       providers: ["openai", "claude", "google"],
       priority: "highest",
     },
