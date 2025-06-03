@@ -1,6 +1,7 @@
 import { ImageAvatar } from "@/components/brand-list";
 import { Button } from "@/components/ui/button";
 import { SearchResult } from "@/lib/llm";
+import { cleanUrl } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
 
 export function ResultItem({ result }: { result: SearchResult }) {
@@ -42,7 +43,7 @@ export function ResultItem({ result }: { result: SearchResult }) {
 
             {result.url && (
               <p className="text-xs text-muted-foreground/70 truncate">
-                {new URL(result.url).hostname}
+                {cleanUrl(result.url)}
               </p>
             )}
           </div>

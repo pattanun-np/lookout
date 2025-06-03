@@ -3,6 +3,7 @@ import { google } from "@ai-sdk/google";
 import { Anthropic } from "@anthropic-ai/sdk";
 import { generateObject, generateText } from "ai";
 import { z } from "zod";
+import { cleanUrl } from "./utils";
 
 export type LLMProvider = "openai" | "claude" | "google";
 
@@ -179,7 +180,7 @@ export async function processPromptWithOpenAI(
                   snippet: (s.snippet as string) || (s.content as string) || "",
                   domain:
                     s.url && typeof s.url === "string"
-                      ? new URL(s.url).hostname
+                      ? cleanUrl(s.url)
                       : undefined,
                   publishedDate: s.publishedDate as string,
                   confidence: s.score as number,
@@ -421,7 +422,7 @@ export async function processPromptWithClaude(
                   snippet: (sr.snippet as string) || "",
                   domain:
                     sr.url && typeof sr.url === "string"
-                      ? new URL(sr.url).hostname
+                      ? cleanUrl(sr.url)
                       : undefined,
                 });
               }
