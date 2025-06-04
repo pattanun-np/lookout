@@ -1,4 +1,4 @@
-import { prompts, modelResults } from "@/db/schema";
+import { prompts, modelResults, geoRegionEnum } from "@/db/schema";
 import { SearchResult } from "@/lib/llm";
 import { Topic } from "./topic";
 
@@ -38,28 +38,4 @@ export type Status =
   | "failed"
   | "cancelled";
 
-export type Region =
-  | "global"
-  | "us"
-  | "eu"
-  | "uk"
-  | "de"
-  | "fr"
-  | "es"
-  | "it"
-  | "in"
-  | "jp"
-  | "cn"
-  | "au"
-  | "ca"
-  | "br"
-  | "mx"
-  | "ar"
-  | "sa"
-  | "ae"
-  | "il"
-  | "tr"
-  | "sa"
-  | "ae"
-  | "il"
-  | "tr";
+export type Region = (typeof geoRegionEnum.enumValues)[number];

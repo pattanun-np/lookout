@@ -106,6 +106,14 @@ export const geoRegionEnum = pgEnum("geo_region", [
   "au",
   "ca",
   "br",
+  "mx",
+  "ar",
+  "sa",
+  "ae",
+  "il",
+  "tr",
+  "sa",
+  "ae",
 ]);
 
 export const status = pgEnum("prompt_status", [

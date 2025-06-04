@@ -43,6 +43,13 @@
       "when": 1748712763362,
       "tag": "0005_skinny_crystal",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1749070994454,
+      "tag": "0006_curious_stellaris",
+      "breakpoints": true
     }
   ]
 }
