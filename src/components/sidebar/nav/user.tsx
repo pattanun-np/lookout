@@ -17,8 +17,6 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUserLoading } from "./loading";
 import { Suspense } from "react";
-import { auth } from "@/auth";
-import { headers } from "next/headers";
 import { db } from "@/db";
 import { user as userSchema } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -26,17 +24,15 @@ import { UpgradeButton } from "@/components/upgrade-button";
 import { PlanType } from "@/lib/stripe/server";
 import { manageSubscription } from "@/app/actions/stripe";
 import { LoadingButton } from "@/components/loading-button";
+import { getUser } from "@/auth/server";
 
 async function NavUserAsync() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const user = await getUser();
 
-  if (!session?.user) return null;
+  if (!user) return null;
 
-  // Get full user data including subscription info
   const fullUser = await db.query.user.findFirst({
-    where: eq(userSchema.id, session.user.id),
+    where: eq(userSchema.id, user.id),
   });
 
   if (!fullUser) return null;

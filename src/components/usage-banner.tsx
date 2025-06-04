@@ -1,20 +1,15 @@
-import { auth } from "@/auth";
 import { checkUsageLimit } from "@/lib/subscription";
 import { Badge } from "@/components/ui/badge";
 import { UpgradeButton } from "./upgrade-button";
 import { AlertTriangle, Info } from "lucide-react";
-import { headers } from "next/headers";
+import { getUser } from "@/auth/server";
 
 export async function UsageBanner() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const user = await getUser();
 
-  if (!session?.user) {
-    return null;
-  }
+  if (!user) return null;
 
-  const usage = await checkUsageLimit(session.user.id);
+  const usage = await checkUsageLimit(user.id);
 
   if (usage.limit === -1) {
     return null;

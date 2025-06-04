@@ -1,20 +1,17 @@
-import { auth } from "@/auth";
 import { checkTopicLimit } from "@/lib/subscription";
 import { Badge } from "@/components/ui/badge";
 import { UpgradeButton } from "./upgrade-button";
 import { AlertTriangle, Info } from "lucide-react";
-import { headers } from "next/headers";
+import { getUser } from "@/auth/server";
 
 export async function TopicLimitBanner() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const user = await getUser();
 
-  if (!session?.user) {
+  if (!user) {
     return null;
   }
 
-  const topicLimit = await checkTopicLimit(session.user.id);
+  const topicLimit = await checkTopicLimit(user.id);
 
   const usagePercentage = (topicLimit.currentTopics / topicLimit.limit) * 100;
   const isNearLimit = usagePercentage >= 80;
