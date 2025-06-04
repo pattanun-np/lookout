@@ -1,7 +1,7 @@
 <div align="center">
   <img src="public/logo-move.gif" alt="LookOut Logo" width="120" height="120" style="border-radius:5%">
   
-  # LookOut - AI Search Ranking Tracker
+  # LookOut
   
   **Monitor your brand's visibility across ChatGPT, Claude, Gemini and emerging AI search engines**
   
