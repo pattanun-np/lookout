@@ -52,4 +52,14 @@ export type Region =
   | "cn"
   | "au"
   | "ca"
-  | "br";
+  | "br"
+  | "mx"
+  | "ar"
+  | "sa"
+  | "ae"
+  | "il"
+  | "tr"
+  | "sa"
+  | "ae"
+  | "il"
+  | "tr";

@@ -102,6 +102,12 @@ export function CreatePromptDialog({ children }: CreatePromptDialogProps) {
                   <SelectItem value="au">Australia</SelectItem>
                   <SelectItem value="ca">Canada</SelectItem>
                   <SelectItem value="br">Brazil</SelectItem>
+                  <SelectItem value="mx">Mexico</SelectItem>
+                  <SelectItem value="ar">Argentina</SelectItem>
+                  <SelectItem value="sa">Saudi Arabia</SelectItem>
+                  <SelectItem value="ae">United Arab Emirates</SelectItem>
+                  <SelectItem value="il">Israel</SelectItem>
+                  <SelectItem value="tr">Turkey</SelectItem>
                 </SelectContent>
               </Select>
             </div>
