@@ -166,7 +166,7 @@ bun run lint
 - Track brand mentions in AI responses
 - Monitor competitor positioning
 - Optimize content for LLM visibility
-- Generate executive reports
+- Generate dashboard reports
 
 ### SEO Agencies
 

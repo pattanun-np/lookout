@@ -9,7 +9,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { TopicSelectLogo, TopicSelectorSkeleton } from "../topic-selector";
-import { getTopics } from "../topics/actions";
+import { getTopics } from "../topics/data";
 import Link from "next/link";
 
 export async function TopicSelectorWrapper({ topicId }: { topicId?: string }) {

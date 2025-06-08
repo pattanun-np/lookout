@@ -14,6 +14,20 @@ export const cleanUrl = (url: string) => {
   return urlObj.hostname.toLowerCase().replace(/^www\./, "");
 };
 
+// Date utility functions to reduce duplication
+export const getDaysAgo = (days: number): Date => {
+  const now = new Date();
+  return new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+};
+
+export const getDateRanges = () => {
+  return {
+    now: new Date(),
+    thirtyDaysAgo: getDaysAgo(30),
+    sixtyDaysAgo: getDaysAgo(60),
+  };
+};
+
 export const getVisibilityScore = (results: LLMResult[], brandName: string) => {
   const completedResults = results.filter(
     (result) => result.status === "completed" && result.results.length > 0

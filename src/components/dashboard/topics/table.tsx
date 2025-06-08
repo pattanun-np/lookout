@@ -3,7 +3,7 @@ import { Table, TableBody, TableEmptyState } from "@/components/ui/table";
 import { TopicsTableHeader } from "./header";
 import { TopicsTableSkeleton } from "./skeleton";
 import { TopicTableRow } from "./row";
-import { getTopics } from "./actions";
+import { getTopics } from "./data";
 import { Bot } from "lucide-react";
 
 async function TopicsTableContent() {

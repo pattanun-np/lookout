@@ -15,14 +15,14 @@ export async function TopicSelectorWrapper({ topicId }: { topicId?: string }) {
   const topics = await getTopics();
   return (
     <TopicSelectLogo
-      url="/dashboard/mentions"
+      url="/dashboard/main"
       topics={topics}
       currentTopicId={topicId}
     />
   );
 }
 
-export function MentionsBreadcrumb({ topicId }: { topicId?: string }) {
+export function DashboardBreadcrumb({ topicId }: { topicId?: string }) {
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
       <div className="flex items-center gap-2 px-4">
@@ -40,7 +40,7 @@ export function MentionsBreadcrumb({ topicId }: { topicId?: string }) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Mentions</BreadcrumbPage>
+              <BreadcrumbPage>Dashboard</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

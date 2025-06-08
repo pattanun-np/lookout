@@ -1,4 +1,4 @@
-import { getTopics } from "@/components/dashboard/topics/actions";
+import { getTopics } from "@/components/dashboard/topics/data";
 import { getPrompts } from "@/components/dashboard/rankings/actions";
 import { TopicStep } from "./topic-step";
 import { PromptStep } from "./prompt-step";
@@ -42,7 +42,7 @@ export async function Onboarding({ searchParams }: OnboardingProps) {
   const hasStripeParams =
     searchParams?.success === "true" || searchParams?.canceled === "true";
 
-  if (hasAnalysis && !hasStripeParams) redirect("/dashboard/rankings");
+  if (hasAnalysis && !hasStripeParams) redirect("/dashboard/main");
 
   const steps: Step[] = [
     {

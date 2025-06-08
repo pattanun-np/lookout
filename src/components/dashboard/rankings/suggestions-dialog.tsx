@@ -13,7 +13,7 @@ import {
   generatePromptSuggestions,
   type PromptSuggestion,
 } from "@/lib/suggestions";
-import { getTopics } from "../topics/actions";
+import { getTopics } from "../topics/data";
 import { createPrompt } from "./actions";
 import { revalidatePath } from "next/cache";
 import { SubmitButton } from "@/components/submit-button";

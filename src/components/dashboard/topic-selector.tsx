@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getTopics } from "./topics/actions";
+import { getTopics } from "./topics/data";
 
 interface TopicSelectorProps {
   topics: Topic[];

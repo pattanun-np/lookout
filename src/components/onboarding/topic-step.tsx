@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/submit-button";
-import { createTopicFromUrl } from "@/components/dashboard";
+import { createTopicFromUrl } from "@/components/dashboard/topics/actions";
 
 export function TopicStep() {
   async function handleSubmit(formData: FormData) {
