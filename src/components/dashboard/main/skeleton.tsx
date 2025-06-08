@@ -216,7 +216,7 @@ function ModelPerformanceCardSkeleton() {
 export function DashboardOverviewSkeleton() {
   return (
     <div className="space-y-4">
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, index) => (
           <KPICardSkeleton key={index} />
         ))}
