@@ -15,7 +15,9 @@
 <br />
 
 <div align="center">
-  <img src="public/demo.png" alt="LookOut Demo">
+  <img src="public/dashboard.png" alt="LookOut Dashboard">
+  <img src="public/ranking.png" alt="LookOut Ranking">
+  <img src="public/mentions.png" alt="LookOut Ranking">
 </div>
 
 ## Overview
