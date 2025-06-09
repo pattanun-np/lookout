@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/submit-button";
-import { createTopicFromUrl } from "@/components/dashboard/topics/actions";
+import { createTopicFromUrlLegacy } from "@/components/dashboard/topics/actions";
 
 export function TopicStep() {
   async function handleSubmit(formData: FormData) {
@@ -10,7 +10,7 @@ export function TopicStep() {
 
     if (!url?.trim()) return;
 
-    await createTopicFromUrl({ url: url.trim() });
+    await createTopicFromUrlLegacy({ url: url.trim() });
   }
 
   return (
