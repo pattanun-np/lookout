@@ -71,6 +71,7 @@ export interface CreatePromptData {
   topicId: string;
   geoRegion?: Region;
   tags?: string;
+  skipRevalidation?: boolean;
 }
 
 export async function createPrompt(
@@ -119,7 +120,10 @@ export async function createPrompt(
       console.log("Started processing in background");
     }
 
-    revalidatePath("/dashboard/prompts");
+    // Only revalidate if not explicitly skipped
+    if (!data.skipRevalidation) {
+      revalidatePath("/dashboard/prompts");
+    }
 
     return {
       success: true,

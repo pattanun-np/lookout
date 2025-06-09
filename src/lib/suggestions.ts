@@ -28,7 +28,8 @@ export type TopicSuggestion = z.infer<typeof topicSuggestionSchema>;
 
 export async function generatePromptSuggestions(
   topicName: string,
-  topicDescription?: string
+  topicDescription?: string,
+  count: number = 5
 ): Promise<PromptSuggestion[]> {
   try {
     const prompt = `<ROLE>
@@ -36,7 +37,7 @@ export async function generatePromptSuggestions(
 </ROLE>
 
 <TASK>
-  Produce 5 search query suggestions that could lead a searcher to discover the target brand in the results while NOT containing the brand name.
+  Produce ${count} search query suggestions that could lead a searcher to discover the target brand in the results while NOT containing the brand name.
   TARGET BRAND: "${topicName}"
   ${topicDescription ? `BRAND CONTEXT: ${topicDescription}` : ""}
 </TASK>

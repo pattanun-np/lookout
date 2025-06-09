@@ -7,6 +7,8 @@ import { getUser } from "@/auth/server";
 import { revalidatePath } from "next/cache";
 import { cleanUrl } from "@/lib/utils";
 import { checkTopicLimit } from "@/lib/subscription";
+import { generatePromptSuggestions } from "@/lib/suggestions";
+import { createPrompt } from "@/components/dashboard/rankings/actions";
 
 export async function deleteTopic(topicId: string) {
   const user = await getUser();
@@ -85,6 +87,14 @@ export async function createTopicFromUrl(
 
     revalidatePath("/dashboard/topics");
 
+    // Auto-create 10 prompts for the new topic in the background
+    // Don't await this - let it happen asynchronously
+    createAutoPromptsInBackground(newTopic.id, name, description).catch(
+      (error) => {
+        console.error("Failed to create auto-prompts in background:", error);
+      }
+    );
+
     return {
       success: true,
       topicId: newTopic.id,
@@ -95,6 +105,63 @@ export async function createTopicFromUrl(
       success: false,
       error: error instanceof Error ? error.message : "Unknown error occurred",
     };
+  }
+}
+
+// Helper function to create prompts in the background
+async function createAutoPromptsInBackground(
+  topicId: string,
+  name: string,
+  description: string
+) {
+  try {
+    const suggestions = await generatePromptSuggestions(name, description, 10);
+
+    // Take up to 10 suggestions, or create fallback prompts if fewer suggestions
+    const promptsToCreate = suggestions.slice(0, 10);
+
+    // If we have fewer than 10 suggestions, add some fallback prompts
+    if (promptsToCreate.length < 10) {
+      const fallbackPrompts = [
+        `best ${name} alternatives`,
+        `${name} vs competitors`,
+        `top ${name} features`,
+        `${name} pricing comparison`,
+        `${name} customer reviews`,
+        `${name} use cases`,
+        `${name} integration options`,
+        `${name} security features`,
+        `${name} performance benchmarks`,
+        `${name} implementation guide`,
+      ];
+
+      const remainingCount = 10 - promptsToCreate.length;
+      for (let i = 0; i < remainingCount && i < fallbackPrompts.length; i++) {
+        promptsToCreate.push({
+          id: `fallback_${i}`,
+          content: fallbackPrompts[i],
+          description: `Auto-generated prompt for ${name} analysis`,
+        });
+      }
+    }
+
+    // Create prompts in parallel with skipRevalidation to avoid render context issues
+    const promptCreationPromises = promptsToCreate.map((suggestion) =>
+      createPrompt({
+        content: suggestion.content,
+        topicId: topicId,
+        geoRegion: "global",
+        skipRevalidation: true,
+      })
+    );
+
+    await Promise.all(promptCreationPromises);
+
+    console.log(
+      `Successfully created ${promptsToCreate.length} auto-prompts for topic ${name}`
+    );
+  } catch (error) {
+    console.error("Failed to create auto-prompts in background:", error);
   }
 }
 
@@ -131,6 +198,14 @@ export async function createTopicFromUrlLegacy(
       .returning({ id: topics.id });
 
     revalidatePath("/dashboard/topics");
+
+    // Auto-create 10 prompts for the new topic in the background
+    // Don't await this - let it happen asynchronously
+    createAutoPromptsInBackground(newTopic.id, name, description).catch(
+      (error) => {
+        console.error("Failed to create auto-prompts in background:", error);
+      }
+    );
 
     return {
       success: true,
