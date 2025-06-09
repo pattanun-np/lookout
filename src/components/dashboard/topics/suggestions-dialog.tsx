@@ -14,7 +14,7 @@ import {
   generateTopicSuggestions,
   type TopicSuggestion,
 } from "@/lib/suggestions";
-import { createTopicFromUrl } from "./actions";
+import { createTopicFromUrlLegacy } from "./actions";
 
 interface TopicSuggestionsDialogProps {
   children: React.ReactNode;
@@ -87,7 +87,7 @@ async function TopicSuggestionsList() {
     "use server";
 
     try {
-      const result = await createTopicFromUrl({
+      const result = await createTopicFromUrlLegacy({
         url: suggestion.name.toLowerCase().replace(/\s+/g, "") + ".com",
       });
 

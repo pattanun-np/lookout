@@ -42,7 +42,7 @@ export async function Onboarding({ searchParams }: OnboardingProps) {
   const hasStripeParams =
     searchParams?.success === "true" || searchParams?.canceled === "true";
 
-  if (hasAnalysis && !hasStripeParams) redirect("/dashboard/main");
+  if (hasAnalysis && !hasStripeParams) redirect("/dashboard/rankings");
 
   const steps: Step[] = [
     {

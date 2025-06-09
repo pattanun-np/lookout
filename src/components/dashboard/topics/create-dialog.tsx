@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -8,31 +10,34 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { createTopicFromUrl } from "./actions";
+import { createTopicFromUrl, CreateTopicState } from "./actions";
 import { SubmitButton } from "@/components/submit-button";
+import { useActionState, useEffect, useState } from "react";
+import { AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface CreateTopicDialogProps {
   children: React.ReactNode;
 }
 
+const initialState: CreateTopicState = {};
+
 export function CreateTopicDialog({ children }: CreateTopicDialogProps) {
-  async function handleCreateTopic(formData: FormData) {
-    "use server";
+  const [state, formAction] = useActionState(createTopicFromUrl, initialState);
+  const [open, setOpen] = useState(false);
 
-    const url = formData.get("url") as string;
-
-    if (!url?.trim()) {
-      return;
+  // Close dialog on successful creation
+  useEffect(() => {
+    if (state?.success) {
+      setOpen(false);
     }
-
-    await createTopicFromUrl({ url: url.trim() });
-  }
+  }, [state?.success]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
-        <form action={handleCreateTopic}>
+        <form action={formAction}>
           <DialogHeader>
             <DialogTitle>Add New Topic</DialogTitle>
             <DialogDescription>
@@ -54,6 +59,20 @@ export function CreateTopicDialog({ children }: CreateTopicDialogProps) {
                 autoFocus
               />
             </div>
+            {state?.error && (
+              <div
+                className={cn(
+                  "flex items-start gap-3 p-4 border rounded-lg",
+                  "bg-destructive/5 border-destructive/20 text-destructive"
+                )}
+              >
+                <AlertCircle className="h-5 w-5 mt-0.5 shrink-0" />
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">Error</p>
+                  <p className="text-sm opacity-80">{state.error}</p>
+                </div>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <SubmitButton
