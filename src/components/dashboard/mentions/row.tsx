@@ -1,9 +1,9 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Smile, Frown, Meh } from "lucide-react";
-import { formatRelative } from "date-fns";
 import { ImageAvatar } from "@/components/brand-list";
 import { Mention } from "@/types/mentions";
+import { LocalDate } from "@/components/local-date";
 
 const getSentimentIcon = ({
   sentiment,
@@ -56,7 +56,7 @@ export function MentionTableRow({ mention }: { mention: Mention }) {
         {mention.position ? `#${mention.position}` : "N/A"}
       </TableCell>
       <TableCell className="text-sm text-muted-foreground capitalize">
-        {formatRelative(new Date(mention.createdAt), new Date())}
+        <LocalDate date={mention.createdAt} />
       </TableCell>
     </TableRow>
   );

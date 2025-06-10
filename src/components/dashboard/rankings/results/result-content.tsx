@@ -14,11 +14,11 @@ import { db } from "@/db";
 import { prompts } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { getUser } from "@/auth/server";
-import { formatRelative } from "date-fns";
 import { cn, getVisibilityScoreColor } from "@/lib/utils";
 import { ResultItem } from "./item";
 import { SearchResult } from "@/lib/llm";
 import { LLMResult, Prompt, Status } from "@/types/prompt";
+import { LocalDate } from "@/components/local-date";
 
 const MODEL_DISPLAY_NAMES: Record<string, string> = {
   openai: "ChatGPT",
@@ -99,10 +99,6 @@ function PromptSummaryCard({
   prompt: Prompt;
   visibilityScore: number;
 }) {
-  const completedDate = prompt.completedAt
-    ? formatRelative(new Date(prompt.completedAt), new Date())
-    : "Processing results";
-
   return (
     <Card className="shadow-none">
       <CardHeader>
@@ -134,7 +130,11 @@ function PromptSummaryCard({
               </div>
               <div className="flex items-center gap-1.5">
                 <Calendar className="h-4 w-4" />
-                <span>{completedDate}</span>
+                {prompt.completedAt ? (
+                  <LocalDate date={prompt.completedAt} />
+                ) : (
+                  "Processing results"
+                )}
               </div>
             </div>
           </div>
@@ -159,10 +159,6 @@ function ModelResultsList({ modelResults }: { modelResults?: LLMResult[] }) {
 }
 
 function ModelResultItem({ result }: { result: LLMResult }) {
-  const completedDate = result.completedAt
-    ? formatRelative(new Date(result.completedAt), new Date())
-    : null;
-
   return (
     <Card className="shadow-none">
       <CardHeader>
@@ -180,8 +176,10 @@ function ModelResultItem({ result }: { result: LLMResult }) {
               <CardTitle className="text-lg">
                 {getModelDisplayName(result.model)}
               </CardTitle>
-              {completedDate && (
-                <CardDescription>Completed {completedDate}</CardDescription>
+              {result.completedAt && (
+                <CardDescription>
+                  Completed <LocalDate date={result.completedAt} />
+                </CardDescription>
               )}
             </div>
           </div>
