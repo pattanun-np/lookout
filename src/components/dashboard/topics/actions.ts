@@ -61,7 +61,6 @@ export async function createTopicFromUrl(
       };
     }
 
-    // Check topic limits before creating
     const topicCheck = await checkTopicLimit(user.id);
 
     if (!topicCheck.canCreateTopic) {
@@ -87,8 +86,6 @@ export async function createTopicFromUrl(
 
     revalidatePath("/dashboard/topics");
 
-    // Auto-create 10 prompts for the new topic in the background
-    // Don't await this - let it happen asynchronously
     createAutoPromptsInBackground(newTopic.id, name, description).catch(
       (error) => {
         console.error("Failed to create auto-prompts in background:", error);
@@ -108,7 +105,6 @@ export async function createTopicFromUrl(
   }
 }
 
-// Helper function to create prompts in the background
 async function createAutoPromptsInBackground(
   topicId: string,
   name: string,
@@ -117,10 +113,8 @@ async function createAutoPromptsInBackground(
   try {
     const suggestions = await generatePromptSuggestions(name, description, 10);
 
-    // Take up to 10 suggestions, or create fallback prompts if fewer suggestions
     const promptsToCreate = suggestions.slice(0, 10);
 
-    // If we have fewer than 10 suggestions, add some fallback prompts
     if (promptsToCreate.length < 10) {
       const fallbackPrompts = [
         `best ${name} alternatives`,
@@ -145,7 +139,6 @@ async function createAutoPromptsInBackground(
       }
     }
 
-    // Create prompts in parallel with skipRevalidation to avoid render context issues
     const promptCreationPromises = promptsToCreate.map((suggestion) =>
       createPrompt({
         content: suggestion.content,
@@ -165,7 +158,6 @@ async function createAutoPromptsInBackground(
   }
 }
 
-// Keep the original function for backward compatibility if needed elsewhere
 export async function createTopicFromUrlLegacy(
   data: CreateTopicFromUrlData
 ): Promise<{ success: boolean; topicId?: string; error?: string }> {
@@ -173,7 +165,6 @@ export async function createTopicFromUrlLegacy(
     const user = await getUser();
     if (!user) throw new Error("User not found");
 
-    // Check topic limits before creating
     const topicCheck = await checkTopicLimit(user.id);
 
     if (!topicCheck.canCreateTopic) {
@@ -199,8 +190,6 @@ export async function createTopicFromUrlLegacy(
 
     revalidatePath("/dashboard/topics");
 
-    // Auto-create 10 prompts for the new topic in the background
-    // Don't await this - let it happen asynchronously
     createAutoPromptsInBackground(newTopic.id, name, description).catch(
       (error) => {
         console.error("Failed to create auto-prompts in background:", error);
