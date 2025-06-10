@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Eye, Hash, Trash2 } from "lucide-react";
 import Link from "next/link";
 import type { Prompt } from "@/types/prompt";
-import { formatRelative } from "date-fns";
 import { deletePrompt } from "./actions";
 import { LoadingButton } from "../../loading-button";
 import { cn, getVisibilityScoreColor } from "@/lib/utils";
+import { LocalDate } from "@/components/local-date";
 
 interface PromptTableRowProps {
   prompt: Prompt;
@@ -50,9 +50,11 @@ export function PromptTableRow({ prompt }: PromptTableRowProps) {
         {prompt.geoRegion.toUpperCase()}
       </TableCell>
       <TableCell className="text-sm text-muted-foreground truncate">
-        {prompt.completedAt
-          ? formatRelative(new Date(prompt.completedAt), new Date())
-          : "Pending"}
+        {prompt.completedAt ? (
+          <LocalDate date={prompt.completedAt} />
+        ) : (
+          "Pending"
+        )}
       </TableCell>
       <TableCell>
         <div className="flex gap-2">
