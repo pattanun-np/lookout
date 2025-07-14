@@ -56,6 +56,23 @@ export async function checkUsageLimit(userId: string): Promise<{
     };
   }
 
+  // Enterprise plan has unlimited access
+  if (userPlan.plan === "enterprise") {
+    const [usage] = await db
+      .select({ count: count() })
+      .from(prompts)
+      .where(and(eq(prompts.userId, userId)));
+
+    const currentUsage = usage?.count ?? 0;
+
+    return {
+      canProcess: true,
+      currentUsage,
+      limit: -1, // -1 indicates unlimited
+      plan: userPlan.plan,
+    };
+  }
+
   if (userPlan.plan === "free") {
     const [usage] = await db
       .select({ count: count() })
@@ -139,6 +156,17 @@ export async function checkTopicLimit(userId: string): Promise<{
     .where(and(eq(topics.userId, userId), eq(topics.isActive, true)));
 
   const currentTopics = topicCount?.count || 0;
+  
+  // Enterprise plan has unlimited topics
+  if (userPlan.plan === "enterprise") {
+    return {
+      canCreateTopic: true,
+      currentTopics,
+      limit: -1, // -1 indicates unlimited
+      plan: userPlan.plan,
+    };
+  }
+
   const limit = userPlan.limits.topicsLimit;
 
   return {

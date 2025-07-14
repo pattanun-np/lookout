@@ -13,6 +13,7 @@ import { Check } from "lucide-react";
 import { createCheckoutSession } from "@/app/actions/stripe";
 import { cn } from "@/lib/utils";
 import { LoadingButton } from "./loading-button";
+import { RedeemCode } from "./redeem-code";
 
 interface PricingProps {
   currentPlan?: PlanType;
@@ -106,6 +107,19 @@ export function Pricing({
             </Card>
           );
         })}
+      </div>
+
+      <div className="mt-12 mb-8">
+        <div className="text-center mb-6">
+          <h2 className="text-xl font-semibold mb-2">Have a Redeem Code?</h2>
+          <p className="text-sm text-muted-foreground">
+            Enter your redeem code to unlock Enterprise access
+          </p>
+        </div>
+        <RedeemCode 
+          currentPlan={currentPlan}
+          onPlanUpdate={() => window.location.reload()}
+        />
       </div>
 
       <div className="text-center mt-8 text-sm text-muted-foreground">
