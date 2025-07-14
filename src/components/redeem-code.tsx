@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Gift, Loader2, CheckCircle, XCircle } from "lucide-react";
+import { Gift, Loader2, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface RedeemCodeProps {
@@ -44,7 +44,7 @@ export function RedeemCode({ currentPlan, onPlanUpdate }: RedeemCodeProps) {
       } else {
         toast.error(data.error || "Failed to redeem code");
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred while redeeming the code");
     } finally {
       setIsLoading(false);
